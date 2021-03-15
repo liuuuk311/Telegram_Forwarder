@@ -32,7 +32,7 @@ if ENV:
 
     WEBHOOK = bool(os.environ.get('WEBHOOK', False))
     IP_ADDRESS = os.environ.get('IP_ADDRESS', "0.0.0.0")
-    URL = os.environ.get('URL', "")  # Does not contain token
+    URL = os.environ.get('URL', "")
     PORT = int(os.environ.get('PORT', 5000))
     CERT_PATH = os.environ.get("CERT_PATH")
 
