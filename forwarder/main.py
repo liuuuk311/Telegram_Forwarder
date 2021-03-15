@@ -23,6 +23,7 @@ DEV_GROUP = -405845918
 
 
 client = TelegramClient('login.session', api_id, api_hash)
+client.send_message('me', 'Rubo le offerte con questo account')
 
 
 @client.on(events.NewMessage(chats=FROM_CHATS))
