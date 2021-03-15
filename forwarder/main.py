@@ -22,17 +22,13 @@ DEAL_GROUP = -563703943
 DEV_GROUP = -405845918
 
 
-async def get_from_chats(client):
-    return [await client.get_entity(chat_id) for chat_id in FROM_CHATS]
-
-
 client = TelegramClient('login.session', api_id, api_hash)
-from_entity = await get_from_chats(client)
-to_chat = client.get_entity(DEV_GROUP)
+
+
+@client.on(events.NewMessage(chats=FROM_CHATS))
+async def handler(event):
+    to_chat = await client.get_entity(DEV_GROUP)
+    await event.message.forward_to(to_chat)
+
 client.start()
 client.run_until_disconnected()
-
-
-@client.on(events.NewMessage(chats=from_entity))
-async def handler(event):
-    await event.message.forward_to(to_chat)
