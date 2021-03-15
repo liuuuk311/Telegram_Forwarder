@@ -23,6 +23,7 @@ DEV_GROUP = -405845918
 
 
 client = TelegramClient('login.session', api_id, api_hash)
+client.start()
 client.send_message('me', 'Rubo le offerte con questo account')
 
 
@@ -31,5 +32,4 @@ async def handler(event):
     to_chat = await client.get_entity(DEAL_GROUP)
     await event.message.forward_to(to_chat)
 
-client.start()
 client.run_until_disconnected()
