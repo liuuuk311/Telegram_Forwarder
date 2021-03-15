@@ -1,6 +1,5 @@
 from telethon.sync import TelegramClient, events
 import requests
-import asyncio
 
 api_id = 3877185
 api_hash = "a71f3afb87f37c887e2373ee401ffc66"
@@ -16,6 +15,7 @@ FROM_CHATS = [
     -1001339383475,
     -1001317129788,
     -1001148795974,
+    -405845918,
 ]
 
 DEAL_GROUP = -563703943
@@ -25,9 +25,9 @@ DEV_GROUP = -405845918
 client = TelegramClient('login.session', api_id, api_hash)
 
 
-@client.on(events.NewMessage())
+@client.on(events.NewMessage(chats=FROM_CHATS))
 async def handler(event):
-    to_chat = await client.get_entity(DEV_GROUP)
+    to_chat = await client.get_entity(DEAL_GROUP)
     await event.message.forward_to(to_chat)
 
 client.start()
