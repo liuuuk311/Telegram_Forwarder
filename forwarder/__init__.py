@@ -39,7 +39,7 @@ if ENV:
     WORKERS = int(os.environ.get('WORKERS', 4))
 
 else:
-    from config import Settings as Config
+    from forwarder.config import Settings as Config
     API_KEY = Config.API_KEY
     try:
         OWNER_ID = int(Config.OWNER_ID)
