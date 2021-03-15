@@ -4,7 +4,7 @@ import requests
 api_id = 3877185
 api_hash = "a71f3afb87f37c887e2373ee401ffc66"
 
-url = "https://firebasestorage.googleapis.com/v0/b/test1-ba648.appspot.com/o/login.session?alt=media&token=77467350-16b9-4a5d-8321-559397f2e6eb"
+url = "https://firebasestorage.googleapis.com/v0/b/test1-ba648.appspot.com/o/login.session?alt=media&token=b90380aa-fd6e-4496-81f6-5dd6a6db7d92"
 r = requests.get(url, allow_redirects=True)
 open('login.session', 'wb').write(r.content)
 
@@ -15,7 +15,6 @@ FROM_CHATS = [
     -1001339383475,
     -1001317129788,
     -1001148795974,
-    -405845918,
 ]
 
 DEAL_GROUP = -563703943
