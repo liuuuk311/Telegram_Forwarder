@@ -25,7 +25,7 @@ DEV_GROUP = -405845918
 client = TelegramClient('login.session', api_id, api_hash)
 
 
-@client.on(events.NewMessage(chats=FROM_CHATS))
+@client.on(events.NewMessage())
 async def handler(event):
     to_chat = await client.get_entity(DEV_GROUP)
     await event.message.forward_to(to_chat)
