@@ -25,8 +25,8 @@ FROM_CHATS = [
 
 with TelegramClient('login.session', api_id, api_hash) as client:
 
-   from_entity = [await client.get_entity(chat_id) for chat_id in FROM_CHATS]
-   to_chat = await client.get_entity(-405845918)
+   from_entity = [client.get_entity(chat_id) for chat_id in FROM_CHATS]
+   to_chat = client.get_entity(-405845918)
 
    @client.on(events.NewMessage(chats=from_entity))
    async def handler(event):
