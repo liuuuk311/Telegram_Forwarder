@@ -48,8 +48,8 @@ def help(update, context):
 
 
 def main():
-    start_handler = CommandHandler("start", start, run_async=True)
-    help_handler = CommandHandler("help", help, run_async=True)
+    start_handler = CommandHandler("start", start)
+    help_handler = CommandHandler("help", help)
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(help_handler)
 
