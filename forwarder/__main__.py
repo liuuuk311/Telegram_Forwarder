@@ -1,11 +1,10 @@
-import importlib
 
 from telegram import ParseMode
 from telegram.ext import CommandHandler, Filters
 
-from forwarder import API_KEY, OWNER_ID, WEBHOOK, IP_ADDRESS, URL, CERT_PATH, PORT, LOGGER, \
-    updater, dispatcher
-from forwarder.modules import ALL_MODULES
+from forwarder import updater, dispatcher
+
+from config import Config
 
 PM_START_TEXT = """
 Hey {}, I'm {}!
@@ -21,10 +20,6 @@ Here is a list of usable commands:
 
 just send /id in private chat/group/channel and i will reply it's id.
 """
-
-for module in ALL_MODULES:
-    importlib.import_module("forwarder.modules." + module)
-
 
 def start(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
@@ -48,30 +43,23 @@ def help(update, context):
 
 
 def main():
-    start_handler = CommandHandler("start", start, filters=Filters.user(OWNER_ID), run_async=True)
-    help_handler = CommandHandler("help", help, filters=Filters.user(OWNER_ID), run_async=True)
+    start_handler = CommandHandler("start", start, filters=Filters.user(Config.OWNER_ID), run_async=True)
+    help_handler = CommandHandler("help", help, filters=Filters.user(Config.OWNER_ID), run_async=True)
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(help_handler)
 
-    if WEBHOOK:
-        LOGGER.info("Using webhooks.")
-        updater.start_webhook(listen=IP_ADDRESS,
-                              port=PORT,
-                              url_path=API_KEY)
+    if Config.WEBHOOK:
+        updater.start_webhook(listen=Config.IP_ADDRESS,
+                              port=Config.PORT,
+                              url_path=Config.API_KEY)
 
-        if CERT_PATH:
-            updater.bot.set_webhook(url=URL + API_KEY,
-                                    certificate=open(CERT_PATH, 'rb'))
-        else:
-            updater.bot.set_webhook(url=URL + API_KEY)
+        updater.bot.set_webhook(url=Config.URL + Config.API_KEY)
 
     else:
-        LOGGER.info("Using long polling.")
         updater.start_polling(timeout=15, read_latency=4)
 
     updater.idle()
 
 
 if __name__ == '__main__':
-    LOGGER.info("Successfully loaded modules: " + str(ALL_MODULES))
     main()
