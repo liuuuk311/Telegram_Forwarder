@@ -4,7 +4,7 @@ import requests
 api_id = 3052860
 api_hash = "c309b7d34c3c15d0f0dac5b503711e9b"
 
-TelegramClient('prod.session', api_id, api_hash).start()
+# TelegramClient('prod.session', api_id, api_hash).start()
 
 
 url = "https://firebasestorage.googleapis.com/v0/b/test1-ba648.appspot.com/o/prod.session?alt=media&token=86f917cc-e2e3-4fd8-9dea-1af759b40174"
