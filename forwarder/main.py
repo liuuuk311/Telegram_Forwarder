@@ -29,7 +29,7 @@ client.start()
 client.send_message('me', 'Rubo le offerte con questo account')
 
 
-@client.on(events.NewMessage())
+@client.on(events.NewMessage(chats=FROM_CHATS))
 async def handler(event):
     to_chat = await client.get_entity(DEAL_GROUP)
     await event.message.forward_to(to_chat)
