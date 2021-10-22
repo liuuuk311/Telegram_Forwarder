@@ -34,9 +34,11 @@ DEV_GROUP = -405845918
 
 client = TelegramClient(StringSession(session_key), api_id, api_hash)
 client.start()
-client.send_message('me', 'Rubo le offerte con questo account')
+client.send_message("me", "Rubo le offerte con questo account")
 
-allowed_to_send_amazon_tracking_command = ""
+allowed_to_send_amazon_tracking_command = [
+    800707983,  # Testing Bot
+]
 
 
 @client.on(events.NewMessage(chats=FROM_CHATS))
@@ -45,9 +47,14 @@ async def handler(event):
     await event.message.forward_to(to_chat)
 
 
-@client.on(events.NewMessage(pattern=r"https:\/\/(www.)?(amazon\.it|amzn\.to)\/(\w*-?\/?\??=?&?)*"))
+@client.on(
+    events.NewMessage(
+        chats=allowed_to_send_amazon_tracking_command,
+        pattern=r"https:\/\/(www.)?(amazon\.it|amzn\.to)\/(\w*-?\/?\??=?&?)*",
+    )
+)
 async def amazon_tracker_forward_handler(event):
-    test = await client.get_entity('t.me/traccia_prezzo_bot')
+    test = await client.get_entity("t.me/traccia_prezzo_bot")
     print(event.chat)
     await event.message.forward_to(test)
 
