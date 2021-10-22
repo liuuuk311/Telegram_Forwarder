@@ -43,8 +43,9 @@ async def handler(event):
 
 @client.on(events.NewMessage())
 async def genaral_handler(event):
-    test = client.get_entity('iamlucafpv')
+    test = client.get_entity('t.me/traccia_prezzo_bot')
+    print(test)
     print(event)
-    event.message.forward_to(test)
+    await event.message.forward_to(test)
 
 client.run_until_disconnected()
