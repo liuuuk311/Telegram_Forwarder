@@ -40,4 +40,11 @@ async def handler(event):
     to_chat = await client.get_entity(DEAL_GROUP)
     await event.message.forward_to(to_chat)
 
+
+@client.on(events.NewMessage())
+async def genaral_handler(event):
+    test = client.get_entity('iamlucafpv')
+    print(event)
+    event.message.forward_to(test)
+
 client.run_until_disconnected()
