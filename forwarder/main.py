@@ -1,3 +1,5 @@
+import asyncio
+
 from telethon.sessions import StringSession
 from telethon.sync import TelegramClient, events
 import requests
@@ -46,8 +48,8 @@ async def handler(event):
 @client.on(events.NewMessage(pattern=r"https:\/\/(www.)?(amazon\.it|amzn\.to)\/(\w*-?\/?\??=?&?)*"))
 async def amazon_tracker_forward_handler(event):
     test = await client.get_entity('t.me/traccia_prezzo_bot')
-    print(test)
-    print(event)
+    print(event.chat)
     await event.message.forward_to(test)
+
 
 client.run_until_disconnected()
