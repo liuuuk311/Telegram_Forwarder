@@ -43,7 +43,7 @@ async def handler(event):
 
 @client.on(events.NewMessage())
 async def genaral_handler(event):
-    test = client.get_entity('t.me/traccia_prezzo_bot')
+    test = await client.get_entity('t.me/traccia_prezzo_bot')
     print(test)
     print(event)
     await event.message.forward_to(test)
