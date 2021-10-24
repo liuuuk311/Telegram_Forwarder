@@ -37,8 +37,8 @@ client.start()
 client.send_message("me", "Rubo le offerte con questo account")
 
 allowed_to_send_amazon_tracking_command = [
-    800707983,  # Testing Bot
-    # , # iz2zuz_bot
+    800707983,   # Testing Bot
+    2051675854,  # iz2zuz_bot
 ]
 
 
@@ -58,10 +58,6 @@ async def amazon_tracker_forward_handler(event):
     test = await client.get_entity("t.me/traccia_prezzo_bot")
     await event.message.forward_to(test)
 
-
-@client.on(events.NewMessage())
-async def amazon_tracker_forward_handler(event):
-    print(event)
 
 
 client.run_until_disconnected()
