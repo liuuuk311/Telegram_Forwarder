@@ -56,7 +56,10 @@ async def handler(event):
 )
 async def amazon_tracker_forward_handler(event):
     test = await client.get_entity("t.me/traccia_prezzo_bot")
+    print(test)
     await event.message.forward_to(test)
+
+
 
 
 
