@@ -31,6 +31,7 @@ FROM_CHATS = [
 DEAL_GROUP = -563703943
 DEV_GROUP = -405845918
 
+IZ2ZUZ_BOT = 2051675854
 
 client = TelegramClient(StringSession(session_key), api_id, api_hash)
 client.start()
@@ -38,7 +39,11 @@ client.send_message("me", "Rubo le offerte con questo account")
 
 allowed_to_send_amazon_tracking_command = [
     800707983,   # Testing Bot
-    2051675854,  # iz2zuz_bot
+    IZ2ZUZ_BOT,
+]
+
+tracking_bot_chats = [
+    263273773,
 ]
 
 
@@ -56,11 +61,16 @@ async def handler(event):
 )
 async def amazon_tracker_forward_handler(event):
     test = await client.get_entity("t.me/traccia_prezzo_bot")
-    print(test)
     await event.message.forward_to(test)
 
 
-
+@client.on(
+    events.NewMessage(
+        chats=tracking_bot_chats,
+    )
+)
+async def iz2zuz_forward_handler(event):
+    await event.message.forward_to(IZ2ZUZ_BOT)
 
 
 client.run_until_disconnected()
