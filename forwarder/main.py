@@ -46,6 +46,12 @@ tracking_bot_chats = [
     263273773,
 ]
 
+TECH_GROUP = 785446862
+GENERIC_GROUP = 786771026
+HOME_GROUP = 652712250
+
+
+
 
 @client.on(events.NewMessage(chats=FROM_CHATS))
 async def handler(event):
@@ -75,7 +81,18 @@ async def amazon_tracker_forward_handler(event):
 
 @client.on(events.NewMessage())
 async def get_id_handler(event):
-    print(event)
+    links = [
+        "t.me/robodeals",
+        "t.me/offertepuntotech",
+        "t.me/offertesmartworld",
+        "t.me/tecnoffertegroup",
+        "t.me/offerte_casa",
+        "t.me/Italia_offerte_amazon",
+        "t.me/misteroffertait_casa"
+    ]
+    for link in links:
+        test = await client.get_entity(link)
+        print(test)
 
 
 
