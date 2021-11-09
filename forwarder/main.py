@@ -83,12 +83,13 @@ async def amazon_tracker_forward_handler(event):
 async def get_id_handler(event):
     links = [
         "t.me/robodeals",
-        "t.me/offertepuntotech",
-        "t.me/offertesmartworld",
-        "t.me/tecnoffertegroup",
-        "t.me/offerte_casa",
-        "t.me/Italia_offerte_amazon",
-        "t.me/misteroffertait_casa"
+        # "t.me/offertepuntotech",
+        # "t.me/offertesmartworld",
+        # "t.me/tecnoffertegroup",
+        # "t.me/offerte_casa",
+        # "t.me/Italia_offerte_amazon",
+        # "t.me/misteroffertait_casa"
+        "t.me/hardwareprogrammi",
     ]
     for link in links:
         test = await client.get_entity(link)
