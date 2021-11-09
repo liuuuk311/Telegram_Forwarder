@@ -96,8 +96,7 @@ async def amazon_tracker_forward_handler(event):
 
 @client.on(events.NewMessage())
 async def handler(event):
-    to_chat = await client.get_entity(TECH_GROUP)
-    await event.message.forward_to(to_chat)
+    await event.message.forward_to(TECH_GROUP)
 
 
 
