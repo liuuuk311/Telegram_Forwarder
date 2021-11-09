@@ -64,13 +64,19 @@ async def amazon_tracker_forward_handler(event):
     await event.message.forward_to(test)
 
 
-@client.on(
-    events.NewMessage(
-        chats=tracking_bot_chats,
-    )
-)
-async def iz2zuz_forward_handler(event):
-    await event.message.forward_to(IZ2ZUZ_BOT)
+# Remove comments if using IZ2ZUZ_BOT, but we'll need to figure out how to track different products
+# @client.on(
+#     events.NewMessage(
+#         chats=tracking_bot_chats,
+#     )
+# )
+# async def iz2zuz_forward_handler(event):
+#     await event.message.forward_to(IZ2ZUZ_BOT)
+
+@client.on(events.NewMessage())
+async def get_id_handler(event):
+    print(event)
+
 
 
 client.run_until_disconnected()
