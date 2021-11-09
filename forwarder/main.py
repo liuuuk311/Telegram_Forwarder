@@ -50,7 +50,21 @@ TECH_GROUP = 785446862
 GENERIC_GROUP = 786771026
 HOME_GROUP = 652712250
 
+FROM_TECH_CHATS = [
+    -1001442610200,  # Robodeals
+    -1001063843030,  # Offerte.tech
+    -1001341651997,  # Offerte tecnologia
+    -1001429891811,  # Tecno Offerte
+]
 
+FROM_HOME_CHATS = [
+    -1001497307107,  # Offerte casa
+    -1001325047421,  # Mister Offerte Casa
+]
+
+FROM_GENERIC_CHATS = [
+    -1001353291777,  # Offerte Amazon italia
+]
 
 
 @client.on(events.NewMessage(chats=FROM_CHATS))
@@ -79,20 +93,11 @@ async def amazon_tracker_forward_handler(event):
 # async def iz2zuz_forward_handler(event):
 #     await event.message.forward_to(IZ2ZUZ_BOT)
 
+
 @client.on(events.NewMessage())
-async def get_id_handler(event):
-    links = [
-        "t.me/robodeals",
-        "t.me/offertepuntotech",
-        "t.me/offertesmartworld",
-        "t.me/tecnoffertegroup",
-        "t.me/offerte_casa",
-        "t.me/Italia_offerte_amazon",
-        "t.me/misteroffertait_casa"
-    ]
-    for link in links:
-        test = await client.get_entity(link)
-        print(test)
+async def handler(event):
+    to_chat = await client.get_entity(TECH_GROUP)
+    await event.message.forward_to(to_chat)
 
 
 
