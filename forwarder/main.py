@@ -68,6 +68,7 @@ FROM_GENERIC_CHATS = [
 
 
 @client.on(events.NewMessage(chats=FROM_CHATS))
+@client.on(events.MessageEdited(chats=FROM_CHATS))
 async def handler(event):
     to_chat = await client.get_entity(DEAL_GROUP)
     await event.message.forward_to(to_chat)
