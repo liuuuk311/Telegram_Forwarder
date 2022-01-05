@@ -31,7 +31,6 @@ FROM_CHATS = [
 DEAL_GROUP = -563703943
 DEV_GROUP = -405845918
 
-IZ2ZUZ_BOT = 2051675854
 
 client = TelegramClient(StringSession(session_key), api_id, api_hash)
 client.start()
@@ -39,7 +38,6 @@ client.send_message("me", "Rubo le offerte con questo account")
 
 allowed_to_send_amazon_tracking_command = [
     800707983,   # Testing Bot
-    IZ2ZUZ_BOT,
 ]
 
 tracking_bot_chats = [
@@ -72,6 +70,28 @@ FROM_GENERIC_CHATS = [
 async def handler(event):
     to_chat = await client.get_entity(DEAL_GROUP)
     await event.message.forward_to(to_chat)
+
+
+@client.on(
+    events.NewMessage(
+        pattern=r"get_ids",
+    )
+)
+async def get_ids(event):
+    channels = [
+        "t.me/offerte_casa",
+        "t.me/Abbigliamento_Moda_Sconti",
+        "t.me/LaBottegaDelloSconto",
+        "t.me/Sconti_Offerte_H24",
+        "t.me/OutletPoint",
+        "t.me/AlienSalesOfferte",
+        "t.me/MilkyWayShopping_Moda",
+        "t.me/SpaceCoupon",
+        "t.me/mister_coupon",
+        "t.me/MisterPrezzo",
+    ]
+    for channel in channels:
+        print(f"{channel} -> {await client.get_entity(channel)}")
 
 
 @client.on(
