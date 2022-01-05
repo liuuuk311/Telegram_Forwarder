@@ -99,18 +99,18 @@ async def amazon_tracker_forward_handler(event):
 #     await event.message.forward_to(IZ2ZUZ_BOT)
 
 
-@client.on(events.NewMessage(from_users=FROM_TECH_CHATS))
+@client.on(events.NewMessage(chats=FROM_TECH_CHATS))
 async def handler(event):
     await event.message.forward_to(TECH_GROUP)
 
 
-@client.on(events.NewMessage(from_users=FROM_HOME_CHATS))
+@client.on(events.NewMessage(chats=FROM_HOME_CHATS))
 async def handler(event):
     await event.message.forward_to(HOME_GROUP)
 
 
 @client.on(events.NewMessage(
-    # from_users=FROM_GENERIC_CHATS
+    chats=FROM_GENERIC_CHATS
 ))
 async def handler(event):
     print(event)
