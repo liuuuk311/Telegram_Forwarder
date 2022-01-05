@@ -109,9 +109,9 @@ async def handler(event):
     await event.message.forward_to(HOME_GROUP)
 
 
-# @client.on(events.NewMessage(
-#     from_users=FROM_GENERIC_CHATS
-# ))
+@client.on(events.NewMessage(
+    # from_users=FROM_GENERIC_CHATS
+))
 async def handler(event):
     print(event)
     await event.message.forward_to(GENERIC_GROUP)
