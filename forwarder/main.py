@@ -47,6 +47,7 @@ tracking_bot_chats = [
     263273773,
 ]
 
+print("Generics: " + str(FROM_GENERIC_CHATS))
 
 @client.on(events.NewMessage(chats=FROM_CHATS))
 @client.on(events.MessageEdited(chats=FROM_CHATS))
@@ -108,9 +109,9 @@ async def handler(event):
     await event.message.forward_to(HOME_GROUP)
 
 
-@client.on(events.NewMessage(
-    from_users=FROM_GENERIC_CHATS
-))
+# @client.on(events.NewMessage(
+#     from_users=FROM_GENERIC_CHATS
+# ))
 async def handler(event):
     print(event)
     await event.message.forward_to(GENERIC_GROUP)
