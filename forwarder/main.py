@@ -112,11 +112,6 @@ async def handler(event):
     from_users=FROM_GENERIC_CHATS
 ))
 async def handler(event):
-    await event.message.forward_to(GENERIC_GROUP)
-
-
-@client.on(events.NewMessage())
-async def handler(event):
     print(event)
     await event.message.forward_to(GENERIC_GROUP)
 
