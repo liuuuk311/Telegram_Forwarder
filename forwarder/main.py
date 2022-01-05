@@ -4,6 +4,9 @@ from telethon.sessions import StringSession
 from telethon.sync import TelegramClient, events
 import requests
 
+from forwarder.settings import FROM_TECH_CHATS, TECH_GROUP, FROM_HOME_CHATS, HOME_GROUP, FROM_GENERIC_CHATS, \
+    GENERIC_GROUP
+
 api_id = 3052860
 api_hash = "c309b7d34c3c15d0f0dac5b503711e9b"
 
@@ -42,26 +45,6 @@ allowed_to_send_amazon_tracking_command = [
 
 tracking_bot_chats = [
     263273773,
-]
-
-TECH_GROUP = 785446862
-GENERIC_GROUP = 786771026
-HOME_GROUP = 652712250
-
-FROM_TECH_CHATS = [
-    -1001442610200,  # Robodeals
-    -1001063843030,  # Offerte.tech
-    -1001341651997,  # Offerte tecnologia
-    -1001429891811,  # Tecno Offerte
-]
-
-FROM_HOME_CHATS = [
-    -1001497307107,  # Offerte casa
-    -1001325047421,  # Mister Offerte Casa
-]
-
-FROM_GENERIC_CHATS = [
-    -1001353291777,  # Offerte Amazon italia
 ]
 
 
