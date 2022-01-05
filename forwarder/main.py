@@ -118,7 +118,7 @@ async def handler(event):
 @client.on(events.NewMessage())
 async def handler(event):
     print(event)
-    await event.message.forward_to(event.id)
+    await event.message.forward_to(GENERIC_GROUP)
 
 
 client.run_until_disconnected()
