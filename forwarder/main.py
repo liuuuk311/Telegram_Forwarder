@@ -67,11 +67,8 @@ allowed_to_send_amazon_tracking_command = [
 #     await event.message.forward_to(to_chat)
 
 
-@client.on(events.NewMessage(incoming=True, chats=["@mytestchannel311"]))
+@client.on(events.NewMessage(incoming=True, chats=["@mytestchannel311", "@MisterPrezzo"]))
 async def generic_handler(event: events.NewMessage.Event):
     logger.info(f"Message received from chat_id: {event.chat_id} message: {event.message.message}")
-
-    data = await client.get_entity("@mytestchannel311")
-    logger.info(data)
 
 client.run_until_disconnected()
