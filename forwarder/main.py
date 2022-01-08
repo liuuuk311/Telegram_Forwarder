@@ -72,5 +72,11 @@ async def generic_handler(event: events.NewMessage.Event):
     logger.info(f"Message received from chat_id: {event.chat_id} message: {event.message.message}")
     data = await client.get_entity("@AlienSalesOfferte")
     logger.info(data)
+    data = await client.get_entity("@MisterPrezzo")
+    logger.info(data)
+    data = await client.get_entity("@fpvmattia")
+    logger.info(data)
+    data = await client.get_entity("@bestFPVdeals")
+    logger.info(data)
 
 client.run_until_disconnected()
