@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from telethon.sessions import StringSession
 from telethon.sync import TelegramClient, events
@@ -6,6 +7,11 @@ import requests
 
 from forwarder.settings import FROM_TECH_CHATS, TECH_GROUP, FROM_HOME_CHATS, HOME_GROUP, FROM_GENERIC_CHATS, \
     GENERIC_GROUP
+
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
+logger = logging.getLogger("Forwarder Bot")
 
 api_id = 3052860
 api_hash = "c309b7d34c3c15d0f0dac5b503711e9b"
@@ -37,17 +43,11 @@ DEV_GROUP = -405845918
 
 client = TelegramClient(StringSession(session_key), api_id, api_hash)
 client.start()
-client.send_message("me", "Rubo le offerte con questo account")
 
 allowed_to_send_amazon_tracking_command = [
     800707983,   # Testing Bot
 ]
 
-tracking_bot_chats = [
-    263273773,
-]
-
-print("Generics: " + str(FROM_GENERIC_CHATS))
 
 @client.on(events.NewMessage(chats=FROM_CHATS))
 @client.on(events.MessageEdited(chats=FROM_CHATS))
@@ -58,61 +58,18 @@ async def handler(event):
 
 @client.on(
     events.NewMessage(
-        pattern=r"get_ids",
-    )
-)
-async def get_ids(event):
-    channels = [
-        "t.me/offerte_casa",
-        "t.me/Abbigliamento_Moda_Sconti",
-        "t.me/LaBottegaDelloSconto",
-        "t.me/Sconti_Offerte_H24",
-        "t.me/OutletPoint",
-        "t.me/AlienSalesOfferte",
-        "t.me/MilkyWayShopping_Moda",
-        "t.me/SpaceCoupon",
-        "t.me/mister_coupon",
-        "t.me/MisterPrezzo",
-    ]
-    for channel in channels:
-        print(f"{channel} -> {await client.get_entity(channel)}")
-
-
-@client.on(
-    events.NewMessage(
         chats=allowed_to_send_amazon_tracking_command,
         pattern=r"https:\/\/(www.)?(amazon\.it|amzn\.to)\/(\w*-?\/?\??=?&?)*",
     )
 )
 async def amazon_tracker_forward_handler(event):
-    test = await client.get_entity("t.me/traccia_prezzo_bot")
-    await event.message.forward_to(test)
+    to_chat = await client.get_entity("t.me/traccia_prezzo_bot")
+    await event.message.forward_to(to_chat)
 
 
-# Remove comments if using IZ2ZUZ_BOT, but we'll need to figure out how to track different products
-# @client.on(
-#     events.NewMessage(
-#         chats=tracking_bot_chats,
-#     )
-# )
-# async def iz2zuz_forward_handler(event):
-#     await event.message.forward_to(IZ2ZUZ_BOT)
-
-
-@client.on(events.NewMessage(chats=FROM_TECH_CHATS))
-async def handler(event):
-    await event.message.forward_to(TECH_GROUP)
-
-
-@client.on(events.NewMessage(chats=FROM_HOME_CHATS))
-async def handler(event):
-    await event.message.forward_to(HOME_GROUP)
-
-
-@client.on(events.NewMessage(chats=[-1001478328942]))
-async def handler(event):
-    print(event)
-    await event.message.forward_to(GENERIC_GROUP)
+@client.on(events.NewMessage())
+async def generic_handler(event):
+    logger.info(f"Message received type: {type(event)} - Event: {event}")
 
 
 client.run_until_disconnected()
