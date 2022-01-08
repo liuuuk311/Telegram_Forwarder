@@ -49,27 +49,27 @@ allowed_to_send_amazon_tracking_command = [
 ]
 
 
-@client.on(events.NewMessage(chats=FROM_CHATS))
-@client.on(events.MessageEdited(chats=FROM_CHATS))
-async def handler(event):
-    to_chat = await client.get_entity(DEAL_GROUP)
-    await event.message.forward_to(to_chat)
+# @client.on(events.NewMessage(chats=FROM_CHATS))
+# @client.on(events.MessageEdited(chats=FROM_CHATS))
+# async def handler(event):
+#     to_chat = await client.get_entity(DEAL_GROUP)
+#     await event.message.forward_to(to_chat)
 
 
-@client.on(
-    events.NewMessage(
-        chats=allowed_to_send_amazon_tracking_command,
-        pattern=r"https:\/\/(www.)?(amazon\.it|amzn\.to)\/(\w*-?\/?\??=?&?)*",
-    )
-)
-async def amazon_tracker_forward_handler(event):
-    to_chat = await client.get_entity("t.me/traccia_prezzo_bot")
-    await event.message.forward_to(to_chat)
+# @client.on(
+#     events.NewMessage(
+#         chats=allowed_to_send_amazon_tracking_command,
+#         pattern=r"https:\/\/(www.)?(amazon\.it|amzn\.to)\/(\w*-?\/?\??=?&?)*",
+#     )
+# )
+# async def amazon_tracker_forward_handler(event):
+#     to_chat = await client.get_entity("t.me/traccia_prezzo_bot")
+#     await event.message.forward_to(to_chat)
 
 
 @client.on(events.NewMessage())
 async def generic_handler(event: events.NewMessage.Event):
-    logger.info(f"Message received from chat_id: {event.chat_id} message: {event.message}")
+    logger.info(f"Message received from chat_id: {event.chat_id} message: {event.message.message}")
 
 
 client.run_until_disconnected()
