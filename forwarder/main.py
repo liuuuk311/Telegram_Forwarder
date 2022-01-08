@@ -68,8 +68,8 @@ async def amazon_tracker_forward_handler(event):
 
 
 @client.on(events.NewMessage())
-async def generic_handler(event):
-    logger.info(f"Message received type: {type(event)} - Event: {event}")
+async def generic_handler(event: events.NewMessage.Event):
+    logger.info(f"Message received from chat_id: {event.chat_id} message: {event.message}")
 
 
 client.run_until_disconnected()
