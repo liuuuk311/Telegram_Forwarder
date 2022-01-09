@@ -49,7 +49,7 @@ MAPPINGS = {}
 
 
 async def build_id_mappings():
-    for channel, group in CHANNELS_MAPPING:
+    for channel, group in CHANNELS_MAPPING.items():
         entity = await client.get_entity(channel)
         logger.info(entity)
 
