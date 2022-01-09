@@ -51,12 +51,15 @@ MAPPINGS = {}
 async def build_id_mappings():
     for channel, group in CHANNELS_MAPPING.items():
         entity = await client.get_entity(channel)
-        logger.info(entity)
+        MAPPINGS[entity.id] = group
 
 
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
-    logger.info(f"Message received {event}")
+    to_chat = MAPPINGS.get(event.chat_id)
+
+    if to_chat:
+        await event.message.forward_to(to_chat)
 
 
 client.loop.run_until_complete(build_id_mappings())
