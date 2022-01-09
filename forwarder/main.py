@@ -58,6 +58,7 @@ async def build_id_mappings():
 
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
+    logger.info(f"Event chat id: {event.chat_id}")
     to_chat = MAPPINGS.get(event.chat_id)
     logger.info(f"To chat: {to_chat}")
 
