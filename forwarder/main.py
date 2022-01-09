@@ -6,6 +6,7 @@ from telethon.sync import TelegramClient, events
 import requests
 
 from forwarder.settings import CHANNELS_MAPPING
+from forwarder.utils import extract_links
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -57,7 +58,7 @@ async def generic_handler(event: events.NewMessage.Event):
     to_chat = MAPPINGS.get(event.chat_id)
 
     if to_chat:
-        logger.info(f"Parsed message: {event.message.entities}")
+        logger.info(f"Parsed links: {extract_links(event.message.entities)}")
         await event.message.forward_to(to_chat)
 
 
