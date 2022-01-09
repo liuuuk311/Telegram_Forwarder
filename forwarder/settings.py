@@ -15,7 +15,5 @@ CHANNELS_MAPPING = {
 
     "@fpvmattia": FPV_GROUP,
     "@hardwareprogrammi": FPV_GROUP,
-
-    "@mytestchannel311": GENERIC_GROUP
 }
 

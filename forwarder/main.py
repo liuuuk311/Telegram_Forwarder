@@ -30,11 +30,6 @@ session_key = "1BJWap1sBu14bV-xpw4dDlhMCtl9k_drCaXGaxfNdWVlSoDE233J-i5CU1XvqgUZr
 
 client = TelegramClient(StringSession(session_key), api_id, api_hash)
 client.start()
-
-allowed_to_send_amazon_tracking_command = [
-    800707983,   # Testing Bot
-]
-
 MAPPINGS = {}
 
 # @client.on(
@@ -59,11 +54,10 @@ async def build_id_mappings():
 
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
-    logger.info(f"Event chat id: {event.chat_id}")
     to_chat = MAPPINGS.get(event.chat_id)
-    logger.info(f"To chat: {to_chat}")
 
     if to_chat:
+        logger.info(f"Parsed message: {event.message}")
         await event.message.forward_to(to_chat)
 
 
