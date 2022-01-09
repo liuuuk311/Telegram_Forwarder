@@ -25,15 +25,6 @@ session_key = "1BJWap1sBu14bV-xpw4dDlhMCtl9k_drCaXGaxfNdWVlSoDE233J-i5CU1XvqgUZr
 # r = requests.get(url, allow_redirects=True)
 # open('login.session', 'wb').write(r.content)
 
-# FROM_CHATS = [
-#     -1001159240979,
-#     -1001196885168,
-#     -1001161672347,
-#     -1001339383475,
-#     -1001317129788,
-#     -1001148795974,
-# ]
-#
 # DEAL_GROUP = -563703943
 # DEV_GROUP = -405845918
 
@@ -44,14 +35,6 @@ client.start()
 allowed_to_send_amazon_tracking_command = [
     800707983,   # Testing Bot
 ]
-
-
-# @client.on(events.NewMessage(chats=FROM_CHATS))
-# @client.on(events.MessageEdited(chats=FROM_CHATS))
-# async def handler(event):
-#     to_chat = await client.get_entity(DEAL_GROUP)
-#     await event.message.forward_to(to_chat)
-
 
 # @client.on(
 #     events.NewMessage(
@@ -66,6 +49,6 @@ allowed_to_send_amazon_tracking_command = [
 
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
-    logger.info(f"Message received from chat_id: {event.chat_id} message: {event.message.message}")
+    logger.info(f"Message received {event}")
 
 client.run_until_disconnected()
