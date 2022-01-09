@@ -12,5 +12,5 @@ logger = logging.getLogger("Forwarder Bot")
 def extract_links(entities: List) -> List[str]:
     logger.info(entities)
     filtered = filter(lambda x: isinstance(x, MessageEntityTextUrl), entities)
-    logger.info(filtered)
+    logger.info(list(filtered))
     return list(map(lambda x: x.url, filtered))
