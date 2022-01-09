@@ -51,7 +51,8 @@ MAPPINGS = {}
 async def build_id_mappings():
     for channel, group in CHANNELS_MAPPING.items():
         entity = await client.get_entity(channel)
-        MAPPINGS[entity.id] = group
+        peer_id = await client.get_peer_id(entity.id)
+        MAPPINGS[peer_id] = group
 
     logger.info(MAPPINGS)
 
