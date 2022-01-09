@@ -1,12 +1,9 @@
-import asyncio
 import logging
 
 from telethon.sessions import StringSession
 from telethon.sync import TelegramClient, events
 import requests
 
-from forwarder.settings import FROM_TECH_CHATS, TECH_GROUP, FROM_HOME_CHATS, HOME_GROUP, FROM_GENERIC_CHATS, \
-    GENERIC_GROUP
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -28,17 +25,17 @@ session_key = "1BJWap1sBu14bV-xpw4dDlhMCtl9k_drCaXGaxfNdWVlSoDE233J-i5CU1XvqgUZr
 # r = requests.get(url, allow_redirects=True)
 # open('login.session', 'wb').write(r.content)
 
-FROM_CHATS = [
-    -1001159240979,
-    -1001196885168,
-    -1001161672347,
-    -1001339383475,
-    -1001317129788,
-    -1001148795974,
-]
-
-DEAL_GROUP = -563703943
-DEV_GROUP = -405845918
+# FROM_CHATS = [
+#     -1001159240979,
+#     -1001196885168,
+#     -1001161672347,
+#     -1001339383475,
+#     -1001317129788,
+#     -1001148795974,
+# ]
+#
+# DEAL_GROUP = -563703943
+# DEV_GROUP = -405845918
 
 
 client = TelegramClient(StringSession(session_key), api_id, api_hash)
@@ -70,17 +67,5 @@ allowed_to_send_amazon_tracking_command = [
 @client.on(events.NewMessage(incoming=True))
 async def generic_handler(event: events.NewMessage.Event):
     logger.info(f"Message received from chat_id: {event.chat_id} message: {event.message.message}")
-    l = [
-        "@LaBottegaDelloSconto",
-        "@MilkyWayShopping_Moda",
-        "@SpaceCoupon",
-        "@OutletPoint",
-        "@Abbigliamento_Moda_Sconti",
-        "@Sconti_Offerte_H24",
-        "@offerte_casa"
-    ]
-    for x in l:
-        data = await client.get_entity(x)
-        logger.info(data)
 
 client.run_until_disconnected()
