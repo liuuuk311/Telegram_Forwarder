@@ -67,8 +67,20 @@ allowed_to_send_amazon_tracking_command = [
 #     await event.message.forward_to(to_chat)
 
 
-@client.on(events.NewMessage(incoming=True, chats=["@mytestchannel311", "@MisterPrezzo"]))
+@client.on(events.NewMessage(incoming=True))
 async def generic_handler(event: events.NewMessage.Event):
     logger.info(f"Message received from chat_id: {event.chat_id} message: {event.message.message}")
+    l = [
+        "@LaBottegaDelloSconto",
+        "@MilkyWayShopping_Moda",
+        "@SpaceCoupon",
+        "@OutletPoint",
+        "@Abbigliamento_Moda_Sconti",
+        "@Sconti_Offerte_H24",
+        "@offerte_casa"
+    ]
+    for x in l:
+        data = await client.get_entity(x)
+        logger.info(data)
 
 client.run_until_disconnected()
