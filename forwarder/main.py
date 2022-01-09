@@ -1,9 +1,11 @@
+import asyncio
 import logging
 
 from telethon.sessions import StringSession
 from telethon.sync import TelegramClient, events
 import requests
 
+from forwarder.settings import CHANNELS_MAPPING
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -25,9 +27,6 @@ session_key = "1BJWap1sBu14bV-xpw4dDlhMCtl9k_drCaXGaxfNdWVlSoDE233J-i5CU1XvqgUZr
 # r = requests.get(url, allow_redirects=True)
 # open('login.session', 'wb').write(r.content)
 
-# DEAL_GROUP = -563703943
-# DEV_GROUP = -405845918
-
 
 client = TelegramClient(StringSession(session_key), api_id, api_hash)
 client.start()
@@ -35,6 +34,8 @@ client.start()
 allowed_to_send_amazon_tracking_command = [
     800707983,   # Testing Bot
 ]
+
+MAPPINGS = {}
 
 # @client.on(
 #     events.NewMessage(
@@ -47,8 +48,16 @@ allowed_to_send_amazon_tracking_command = [
 #     await event.message.forward_to(to_chat)
 
 
+async def build_id_mappings():
+    for channel, group in CHANNELS_MAPPING:
+        entity = await client.get_entity(channel)
+        logger.info(entity)
+
+
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
     logger.info(f"Message received {event}")
 
+
+client.loop.run_until_complete(build_id_mappings())
 client.run_until_disconnected()
