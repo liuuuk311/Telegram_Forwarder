@@ -55,3 +55,4 @@ class RegexParser(Parser):
 class MisterCoupon(RegexParser):
     price_pattern = re.compile(r"⚡️(\d+(,\d{2})€)⚡️")
     old_price_pattern = re.compile(r"invece di (\d+(,\d{2})€)")
+    title_pattern = re.compile(r"💥( [[:print:]]*)\n")

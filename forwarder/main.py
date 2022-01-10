@@ -58,6 +58,7 @@ async def generic_handler(event: events.NewMessage.Event):
     to_chat = MAPPINGS.get(event.chat_id)
 
     if to_chat:
+
         logger.info(f"Parsed links: {extract_links(event.message.entities)}")
         await event.message.forward_to(to_chat)
 
