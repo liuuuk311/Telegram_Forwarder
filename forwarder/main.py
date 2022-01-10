@@ -44,8 +44,8 @@ MAPPINGS = {}
 
 async def build_id_mappings():
     for channel, settings in CHANNELS_MAPPING.items():
-        # entity = await client.get_entity(settings.destination_channel)
-        peer_id = await client.get_peer_id(settings.destination_channel)
+        entity = await client.get_entity(settings.destination_channel)
+        peer_id = await client.get_peer_id(entity)
         MAPPINGS[peer_id] = settings
 
     logger.info(f"Mappings: {MAPPINGS}")
