@@ -4,7 +4,7 @@ from telethon.sessions import StringSession
 from telethon.sync import TelegramClient, events
 import requests
 
-from forwarder.settings import CHANNELS_MAPPING, PARSER_MAPPING
+from forwarder.settings import CHANNELS_MAPPING
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
