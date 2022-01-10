@@ -1,12 +1,11 @@
-import asyncio
 import logging
+from collections import namedtuple
 
 from telethon.sessions import StringSession
 from telethon.sync import TelegramClient, events
 import requests
 
-from forwarder.parser import MisterCoupon
-from forwarder.settings import CHANNELS_MAPPING
+from forwarder.settings import CHANNELS_MAPPING, PARSER_MAPPING
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -43,24 +42,25 @@ MAPPINGS = {}
 #     to_chat = await client.get_entity("t.me/traccia_prezzo_bot")
 #     await event.message.forward_to(to_chat)
 
+Deal = namedtuple("Deal", ['destination_channel', "parser"])
+
 
 async def build_id_mappings():
-    for channel, group in CHANNELS_MAPPING.items():
-        entity = await client.get_entity(channel)
-        peer_id = await client.get_peer_id(entity)
-        MAPPINGS[peer_id] = group
-
-
-parser = MisterCoupon()
+    for channel, destination in CHANNELS_MAPPING.items():
+        parser = PARSER_MAPPING.get(channel)
+        if parser:
+            entity = await client.get_entity(destination)
+            peer_id = await client.get_peer_id(entity)
+            MAPPINGS[peer_id] = Deal(destination, parser)
 
 
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
-    to_chat = MAPPINGS.get(event.chat_id)
+    deal = MAPPINGS.get(event.chat_id)
 
-    if to_chat:
-        logger.info(f"Parsed deal: {parser.parse(event.message)}")
-        await event.message.forward_to(to_chat)
+    if deal:
+        logger.info(f"Parsed deal: {deal.parser.parse(event.message)}")
+        await event.message.forward_to(deal.destination)
 
 
 

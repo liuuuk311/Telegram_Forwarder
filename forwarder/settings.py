@@ -1,3 +1,5 @@
+from forwarder.parser import MisterCoupon
+
 TECH_GROUP = -785446862  # Offerte Rubate - Tech
 GENERIC_GROUP = -786771026  # Offerte Rubate - Generiche
 HOME_GROUP = -652712250  # Offerte Rubate - Casa
@@ -15,5 +17,9 @@ CHANNELS_MAPPING = {
 
     "@fpvmattia": FPV_GROUP,
     "@hardwareprogrammi": FPV_GROUP,
+}
+
+PARSER_MAPPING = {
+    "@mister_coupon": MisterCoupon()
 }
 
