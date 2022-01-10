@@ -19,6 +19,9 @@ class ParsedDeal:
         self.title = title
         self.link = link
 
+    def __str__(self):
+        return f"title: {self.title} price: {self.price} old: {self.old_price} link: {self.link}"
+
 
 class Parser(abc.ABC):
     @abc.abstractmethod

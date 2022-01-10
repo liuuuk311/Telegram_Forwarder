@@ -7,7 +7,6 @@ import requests
 
 from forwarder.parser import MisterCoupon
 from forwarder.settings import CHANNELS_MAPPING
-from forwarder.utils import extract_links
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -51,9 +50,9 @@ async def build_id_mappings():
         peer_id = await client.get_peer_id(entity)
         MAPPINGS[peer_id] = group
 
-    logger.info(MAPPINGS)
 
 parser = MisterCoupon()
+
 
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
