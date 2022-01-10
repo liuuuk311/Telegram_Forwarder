@@ -10,6 +10,6 @@ logging.basicConfig(
 logger = logging.getLogger("Forwarder Bot")
 
 
-def extract_links(entities: List) -> List[str]:
+def extract_links(entities: List, text: str) -> List[str]:
     filtered = filter(lambda x: isinstance(x, MessageEntityTextUrl), entities)
-    return list(map(lambda x: get_inner_text(x), filtered))
+    return get_inner_text(text, filtered)
