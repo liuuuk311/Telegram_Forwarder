@@ -74,7 +74,10 @@ class RegexParser(Parser):
 class AmazonLinkParserMixin:
     @staticmethod
     def parse_link(entities: Optional[List[TypeMessageEntity]]) -> str:
-        return entities and extract_links(entities)[0]
+        links = extract_links(entities)
+        if len(links) > 0:
+            return links[0]
+        return ""
 
 
 class MisterCoupon(AmazonLinkParserMixin, RegexParser):
