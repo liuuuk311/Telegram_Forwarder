@@ -71,10 +71,13 @@ class RegexParser(Parser):
         pass
 
 
-class MisterCoupon(RegexParser):
+class AmazonLinkParserMixin:
+    @staticmethod
+    def parse_link(entities: Optional[List[TypeMessageEntity]]) -> str:
+        return entities and extract_links(entities)[0]
+
+
+class MisterCoupon(AmazonLinkParserMixin, RegexParser):
     price_pattern = re.compile(r"⚡️(\d+(,\d{2})€)⚡️")
     old_price_pattern = re.compile(r"invece di (\d+(,\d{2})€)")
-    title_pattern = re.compile(r"💥( [[:print:]]*)\n")
-
-    def parse_link(self, entities: Optional[List[TypeMessageEntity]]) -> str:
-        return entities and extract_links(entities)[0]
+    title_pattern = re.compile(r"💥 (\w*\'?\'? ?,?\(?\)?-?\.?\/?)*\n")
