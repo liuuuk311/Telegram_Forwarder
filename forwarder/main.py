@@ -42,13 +42,13 @@ MAPPINGS = {}
 #     await event.message.forward_to(to_chat)
 
 
-
-
 async def build_id_mappings():
     for channel, settings in CHANNELS_MAPPING.items():
-        entity = await client.get_entity(settings.destination_channel)
-        peer_id = await client.get_peer_id(entity)
+        # entity = await client.get_entity(settings.destination_channel)
+        peer_id = await client.get_peer_id(settings.destination_channel)
         MAPPINGS[peer_id] = settings
+
+    logger.info(f"Mappings: {MAPPINGS}")
 
 
 @client.on(events.NewMessage)
