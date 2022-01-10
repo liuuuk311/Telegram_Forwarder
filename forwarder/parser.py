@@ -80,4 +80,4 @@ class AmazonLinkParserMixin:
 class MisterCoupon(AmazonLinkParserMixin, RegexParser):
     price_pattern = re.compile(r"⚡️(\d+(,\d{2})€)⚡️")
     old_price_pattern = re.compile(r"invece di (\d+(,\d{2})€)")
-    title_pattern = re.compile(r"💥 (\w*\'?\'? ?,?\(?\)?-?\.?\/?)*\n")
+    title_pattern = re.compile(r"💥 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?)*)\n")
