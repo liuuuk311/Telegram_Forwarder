@@ -53,8 +53,8 @@ async def build_id_mappings():
 
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
+    logger.info(f"New event from: {event.chat_id}")
     channel_settings = MAPPINGS.get(event.chat_id)
-
     if channel_settings:
         logger.info(f"Parsed deal: {channel_settings.parser.parse(event.message)}")
         await event.message.forward_to(channel_settings.destination_channel)
