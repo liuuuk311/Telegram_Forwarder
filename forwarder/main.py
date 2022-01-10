@@ -55,13 +55,10 @@ async def build_id_mappings():
 async def generic_handler(event: events.NewMessage.Event):
     logger.info(f"New event from: {event.chat_id}")
     channel_settings = MAPPINGS.get(event.chat_id)
-    logger.info(f"Message: {event.message}")
-
     if channel_settings:
         parsed = channel_settings.parser.parse(event.message)
         logger.info(f"Parsed deal: {parsed}")
         # await event.message.forward_to(channel_settings.destination_channel)
-
 
 
 client.loop.run_until_complete(build_id_mappings())
