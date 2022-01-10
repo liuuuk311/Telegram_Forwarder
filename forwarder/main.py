@@ -5,6 +5,7 @@ from telethon.sessions import StringSession
 from telethon.sync import TelegramClient, events
 import requests
 
+from forwarder.parser import MisterCoupon
 from forwarder.settings import CHANNELS_MAPPING
 from forwarder.utils import extract_links
 
@@ -52,14 +53,14 @@ async def build_id_mappings():
 
     logger.info(MAPPINGS)
 
+parser = MisterCoupon()
 
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
     to_chat = MAPPINGS.get(event.chat_id)
 
     if to_chat:
-
-        logger.info(f"Parsed links: {extract_links(event.message.entities)}")
+        logger.info(f"Parsed deal: {parser.parse(event.message)}")
         await event.message.forward_to(to_chat)
 
 

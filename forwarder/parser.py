@@ -1,16 +1,23 @@
 import abc
 import re
+from typing import List, Optional
+
+from telethon.tl.types import Message, TypeMessageEntity
+
+from forwarder.utils import extract_links
 
 
 class ParsedDeal:
     price: str
     old_price: str
     title: str
+    link: str
 
-    def __init__(self, price, old_price, title):
+    def __init__(self, price, old_price, title, link):
         self.price = price
         self.old_price = old_price
         self.title = title
+        self.link = link
 
 
 class Parser(abc.ABC):
@@ -26,11 +33,16 @@ class Parser(abc.ABC):
     def parse_title(self, text: str) -> str:
         pass
 
-    def parse(self, message: str):
+    @abc.abstractmethod
+    def parse_link(self, entities: Optional[List[TypeMessageEntity]]) -> str:
+        pass
+
+    def parse(self, message: Message):
         return ParsedDeal(
-            self.parse_price(message),
-            self.parse_old_price(message),
-            self.parse_title(message),
+            self.parse_price(message.message),
+            self.parse_old_price(message.message),
+            self.parse_title(message.message),
+            self.parse_link(message.entities),
         )
 
 
@@ -51,8 +63,15 @@ class RegexParser(Parser):
         match = re.search(self.title_pattern, text)
         return match and match.group(0)
 
+    @abc.abstractmethod
+    def parse_link(self, entities: Optional[List[TypeMessageEntity]]) -> str:
+        pass
+
 
 class MisterCoupon(RegexParser):
     price_pattern = re.compile(r"⚡️(\d+(,\d{2})€)⚡️")
     old_price_pattern = re.compile(r"invece di (\d+(,\d{2})€)")
     title_pattern = re.compile(r"💥( [[:print:]]*)\n")
+
+    def parse_link(self, entities: Optional[List[TypeMessageEntity]]) -> str:
+        return entities and extract_links(entities)[0]
