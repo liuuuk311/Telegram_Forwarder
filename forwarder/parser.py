@@ -56,15 +56,15 @@ class RegexParser(Parser):
 
     def parse_price(self, text: str) -> str:
         match = re.search(self.price_pattern, text)
-        return match and match.group(0)
+        return match and match.group(1)
 
     def parse_old_price(self, text: str) -> str:
         match = re.search(self.old_price_pattern, text)
-        return match and match.group(0)
+        return match and match.group(1)
 
     def parse_title(self, text: str) -> str:
         match = re.search(self.title_pattern, text)
-        return match and match.group(0)
+        return match and match.group(1)
 
     @abc.abstractmethod
     def parse_link(self, entities: Optional[List[TypeMessageEntity]]) -> str:
