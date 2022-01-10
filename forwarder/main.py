@@ -1,5 +1,4 @@
 import logging
-from collections import namedtuple
 
 from telethon.sessions import StringSession
 from telethon.sync import TelegramClient, events
@@ -42,25 +41,23 @@ MAPPINGS = {}
 #     to_chat = await client.get_entity("t.me/traccia_prezzo_bot")
 #     await event.message.forward_to(to_chat)
 
-Deal = namedtuple("Deal", ['destination_channel', "parser"])
+
 
 
 async def build_id_mappings():
-    for channel, destination in CHANNELS_MAPPING.items():
-        parser = PARSER_MAPPING.get(channel)
-        if parser:
-            entity = await client.get_entity(destination)
-            peer_id = await client.get_peer_id(entity)
-            MAPPINGS[peer_id] = Deal(destination, parser)
+    for channel, settings in CHANNELS_MAPPING.items():
+        entity = await client.get_entity(settings.destination_channel)
+        peer_id = await client.get_peer_id(entity)
+        MAPPINGS[peer_id] = settings
 
 
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
-    deal = MAPPINGS.get(event.chat_id)
+    channel_settings = MAPPINGS.get(event.chat_id)
 
-    if deal:
-        logger.info(f"Parsed deal: {deal.parser.parse(event.message)}")
-        await event.message.forward_to(deal.destination)
+    if channel_settings:
+        logger.info(f"Parsed deal: {channel_settings.parser.parse(event.message)}")
+        await event.message.forward_to(channel_settings.destination_channel)
 
 
 
