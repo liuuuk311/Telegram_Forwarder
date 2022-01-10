@@ -12,7 +12,7 @@ FPV_GROUP = -563703943  # Offerte Rubate (FPV)
 ChannelSettings = namedtuple("ChannelSettings", ['destination_channel', "parser"])
 
 CHANNELS_MAPPING = {
-    "@mister_coupon": ChannelSettings(GENERIC_GROUP, MisterCoupon),
+    "@mister_coupon": ChannelSettings(GENERIC_GROUP, MisterCoupon()),
     # "@SpaceCoupon": GENERIC_GROUP,
     #
     #
