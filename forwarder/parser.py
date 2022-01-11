@@ -57,7 +57,7 @@ class Parser(abc.ABC):
             self.parse_old_price(event.message.message),
             self.parse_title(event.message.message),
             self.parse_link(event.message.entities),
-            self.parse_image(event.media.url)
+            self.parse_image(event.media.webpage.url)
         )
 
 
