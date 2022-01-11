@@ -18,6 +18,3 @@ def is_amazon_link(url: str) -> bool:
     return url.startswith("https://www.amazon.it/dp/") or url.startswith("https://amzn.to")
 
 
-def extract_amazon_links(entities: Optional[List[TypeMessageEntity]]) -> List[str]:
-    return [url for url in extract_links(entities) if is_amazon_link(url)]
-
