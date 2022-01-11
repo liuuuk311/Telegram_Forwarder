@@ -95,4 +95,4 @@ class MisterCoupon(AmazonLinkParserMixin, RegexParser):
 
     def parse_image(self, url) -> str:
         if url.startswith("https://images.zbcdn.ovh/"):
-            return link
+            return url
