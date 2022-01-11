@@ -56,7 +56,7 @@ async def build_id_mappings():
 async def generic_handler(event: events.NewMessage.Event):
     logger.info(f"New event from: {event.chat_id}")
     channel_settings = MAPPINGS.get(event.chat_id)
-    logger.info(f"Event media? {event.media}")
+
     if channel_settings:
         parsed = await channel_settings.parser.parse(event)
         logger.info(f"Parsed deal: {parsed}")
