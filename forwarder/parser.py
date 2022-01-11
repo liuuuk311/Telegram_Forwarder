@@ -84,13 +84,13 @@ class Parser(abc.ABC):
 
 
 class TextParser(Parser, ABC):
-    def get_price(self, event) -> str:
+    async def get_price(self, event) -> str:
         return event.message.message
 
-    def get_old_price(self, event) -> str:
+    async def get_old_price(self, event) -> str:
         return event.message.message
 
-    def get_title(self, event) -> str:
+    async def get_title(self, event) -> str:
         return event.message.message
 
 
