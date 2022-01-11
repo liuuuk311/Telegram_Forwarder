@@ -137,7 +137,7 @@ class MisterCoupon(AmazonLinkParserMixin, RegexParser):
 
 
 class SpaceCoupon(AmazonLinkParserMixin, RegexParser):
-    price_pattern = re.compile(r"💰️(\d+(,\d{2})€)️")
+    price_pattern = re.compile(r"💰 (\d+(,\d{2}?)€)")
     old_price_pattern = re.compile(r"anziché (\d+(,\d{2})€)!")
     title_pattern = re.compile(r"🛒 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?%?\d?)*)\n")
 
