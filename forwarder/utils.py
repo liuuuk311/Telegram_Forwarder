@@ -9,10 +9,15 @@ logging.basicConfig(
 logger = logging.getLogger("Forwarder Bot")
 
 
+def extract_links(entities: Optional[List[TypeMessageEntity]]) -> List[str]:
+    filtered = filter(lambda x: isinstance(x, MessageEntityTextUrl), entities)
+    return [x.url for x in filtered]
+
+
 def is_amazon_link(url: str) -> bool:
     return url.startswith("https://www.amazon.it/dp/") or url.startswith("https://amzn.to")
 
 
-def extract_links(entities: Optional[List[TypeMessageEntity]]) -> List[str]:
-    filtered = filter(lambda x: isinstance(x, MessageEntityTextUrl), entities)
-    return [x.url for x in filtered if is_amazon_link(x.url)]
+def extract_amazon_links(entities: Optional[List[TypeMessageEntity]]) -> List[str]:
+    return [url for url in entities if is_amazon_link(url)]
+

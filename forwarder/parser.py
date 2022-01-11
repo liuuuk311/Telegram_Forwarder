@@ -1,10 +1,11 @@
 import abc
 import re
+from abc import ABC
 from typing import List, Optional
 
 from telethon.tl.types import Message, TypeMessageEntity
 
-from forwarder.utils import extract_links
+from forwarder.utils import extract_amazon_links, extract_links
 
 
 class ParsedDeal:
@@ -12,15 +13,21 @@ class ParsedDeal:
     old_price: str
     title: str
     link: str
+    image: str
 
-    def __init__(self, price, old_price, title, link):
+    def __init__(self, price, old_price, title, link, image):
         self.price = price
         self.old_price = old_price
         self.title = title
         self.link = link
+        self.image = image
 
     def __str__(self):
-        return f"title: {self.title} price: {self.price} old: {self.old_price} link: {self.link}"
+        return f"title: {self.title} price: {self.price} old: {self.old_price} link: {self.link} image: {self.image}"
+
+    @property
+    def is_valid(self):
+        return self.title and self.price and self.link
 
 
 class Parser(abc.ABC):
@@ -37,7 +44,11 @@ class Parser(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def parse_link(self, entities: Optional[List[TypeMessageEntity]]) -> str:
+    def parse_link(self, entities: Optional[List]) -> str:
+        pass
+
+    @abc.abstractmethod
+    def parse_image(self, entities: Optional[List]) -> str:
         pass
 
     def parse(self, message: Message):
@@ -46,10 +57,11 @@ class Parser(abc.ABC):
             self.parse_old_price(message.message),
             self.parse_title(message.message),
             self.parse_link(message.entities),
+            self.parse_image(message.media)
         )
 
 
-class RegexParser(Parser):
+class RegexParser(Parser, ABC):
     price_pattern: re.Pattern
     old_price_pattern: re.Pattern
     title_pattern: re.Pattern
@@ -66,15 +78,11 @@ class RegexParser(Parser):
         match = re.search(self.title_pattern, text)
         return match and match.group(1)
 
-    @abc.abstractmethod
-    def parse_link(self, entities: Optional[List[TypeMessageEntity]]) -> str:
-        pass
-
 
 class AmazonLinkParserMixin:
     @staticmethod
     def parse_link(entities: Optional[List[TypeMessageEntity]]) -> str:
-        links = extract_links(entities)
+        links = extract_amazon_links(entities)
         if len(links) > 0:
             return links[0]
         return ""
@@ -83,4 +91,10 @@ class AmazonLinkParserMixin:
 class MisterCoupon(AmazonLinkParserMixin, RegexParser):
     price_pattern = re.compile(r"⚡️(\d+(,\d{2})€)⚡️")
     old_price_pattern = re.compile(r"invece di (\d+(,\d{2})€)")
-    title_pattern = re.compile(r"💥 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?)*)\n")
+    title_pattern = re.compile(r"💥 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?%?\d?)*)\n")
+
+    def parse_image(self, entities: Optional[List]) -> str:
+        links = extract_links(entities)
+        for link in links:
+            if link.startswith("https://images.zbcdn.ovh/"):
+                return link
