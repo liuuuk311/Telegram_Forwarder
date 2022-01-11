@@ -3,6 +3,7 @@ import re
 from abc import ABC
 from typing import Optional
 
+from telethon import TelegramClient
 
 from forwarder.utils import extract_links, is_amazon_link
 
@@ -30,6 +31,8 @@ class ParsedDeal:
 
 
 class Parser(abc.ABC):
+    client: TelegramClient
+
     @abc.abstractmethod
     def parse_price(self, text: str) -> str:
         pass
@@ -51,33 +54,34 @@ class Parser(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def get_price(self, event) -> str:
+    async def get_price(self, event) -> str:
         pass
 
     @abc.abstractmethod
-    def get_old_price(self, event) -> str:
+    async def get_old_price(self, event) -> str:
         pass
 
     @abc.abstractmethod
-    def get_title(self, event) -> str:
+    async def get_title(self, event) -> str:
         pass
 
     @abc.abstractmethod
-    def get_link(self, event):
+    async def get_link(self, event):
         pass
 
     @abc.abstractmethod
-    def get_image(self, event):
+    async def get_image(self, event):
         pass
 
-    def parse(self, event):
+    async def parse(self, event):
         return ParsedDeal(
-            self.parse_price(self.get_price(event)),
-            self.parse_old_price(self.get_price(event)),
-            self.parse_title(self.get_title(event)),
-            self.parse_link(self.get_link(event)),
-            self.parse_image(self.get_image(event))
+            self.parse_price(await self.get_price(event)),
+            self.parse_old_price(await self.get_price(event)),
+            self.parse_title(await self.get_title(event)),
+            self.parse_link(await self.get_link(event)),
+            self.parse_image(await self.get_image(event))
         )
+
 
 class TextParser(Parser, ABC):
     def get_price(self, event) -> str:
@@ -121,13 +125,29 @@ class MisterCoupon(AmazonLinkParserMixin, RegexParser):
     old_price_pattern = re.compile(r"invece di (\d+(,\d{2})€)")
     title_pattern = re.compile(r"💥 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?%?\d?)*)\n")
 
-    def get_image(self, event) -> str:
+    async def get_image(self, event) -> str:
         return event.media.webpage.url
 
     def parse_image(self, url: str) -> Optional[str]:
         if url.startswith("https://images.zbcdn.ovh/"):
             return url
 
-    def get_link(self, event) -> str:
+    async def get_link(self, event) -> str:
         return extract_links(event.message.entities)[1]
+
+
+class SpaceCoupon(AmazonLinkParserMixin, RegexParser):
+    price_pattern = re.compile(r"💰️(\d+(,\d{2})€)️")
+    old_price_pattern = re.compile(r"anziché (\d+(,\d{2})€)!")
+    title_pattern = re.compile(r"🛒 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?%?\d?)*)\n")
+
+    async def get_image(self, event) -> str:
+        await self.client.download_media(event.message.media)
+        return "downloaded"
+
+    def parse_image(self, url: str) -> Optional[str]:
+        return url
+
+    async def get_link(self, event) -> str:
+        return extract_links(event.message.entities)[0]
 

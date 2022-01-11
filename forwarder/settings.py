@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from forwarder.parser import MisterCoupon
+from forwarder.parser import MisterCoupon, SpaceCoupon
 
 TECH_GROUP = -785446862  # Offerte Rubate - Tech
 GENERIC_GROUP = -786771026  # Offerte Rubate - Generiche
@@ -13,9 +13,9 @@ ChannelSettings = namedtuple("ChannelSettings", ['destination_channel', "parser"
 
 CHANNELS_MAPPING = {
     "@mister_coupon": ChannelSettings(GENERIC_GROUP, MisterCoupon()),
-    # "@SpaceCoupon": GENERIC_GROUP,
-    #
-    #
+    "@SpaceCoupon": ChannelSettings(GENERIC_GROUP, SpaceCoupon()),
+
+
     # "@MilkyWayShopping_Moda": FASHION_GROUP,
     # "@AlienSalesOfferte": FASHION_GROUP,
     #

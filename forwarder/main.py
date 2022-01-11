@@ -46,6 +46,7 @@ async def build_id_mappings():
     for channel, settings in CHANNELS_MAPPING.items():
         entity = await client.get_entity(channel)
         peer_id = await client.get_peer_id(entity)
+        settings.parser.client = client
         MAPPINGS[peer_id] = settings
 
     logger.info(f"Mappings: {MAPPINGS}")
@@ -57,7 +58,7 @@ async def generic_handler(event: events.NewMessage.Event):
     channel_settings = MAPPINGS.get(event.chat_id)
     logger.info(f"Event media? {event.media}")
     if channel_settings:
-        parsed = channel_settings.parser.parse(event)
+        parsed = await channel_settings.parser.parse(event)
         logger.info(f"Parsed deal: {parsed}")
         # await event.message.forward_to(channel_settings.destination_channel)
 
