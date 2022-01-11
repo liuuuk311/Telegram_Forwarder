@@ -93,8 +93,6 @@ class MisterCoupon(AmazonLinkParserMixin, RegexParser):
     old_price_pattern = re.compile(r"invece di (\d+(,\d{2})€)")
     title_pattern = re.compile(r"💥 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?%?\d?)*)\n")
 
-    def parse_image(self, entities: Optional[List]) -> str:
-        links = extract_links(entities)
-        for link in links:
-            if link.startswith("https://images.zbcdn.ovh/"):
-                return link
+    def parse_image(self, url) -> str:
+        if url.startswith("https://images.zbcdn.ovh/"):
+            return link
