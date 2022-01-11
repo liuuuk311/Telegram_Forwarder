@@ -19,5 +19,5 @@ def is_amazon_link(url: str) -> bool:
 
 
 def extract_amazon_links(entities: Optional[List[TypeMessageEntity]]) -> List[str]:
-    return [url for url in entities if is_amazon_link(url)]
+    return [url for url in extract_links(entities) if is_amazon_link(url)]
 
