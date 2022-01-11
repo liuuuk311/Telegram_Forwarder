@@ -1,11 +1,10 @@
 import abc
 import re
 from abc import ABC
-from typing import List, Optional
+from typing import Optional
 
-from telethon.tl.types import Message, TypeMessageEntity
 
-from forwarder.utils import extract_amazon_links, extract_links, is_amazon_link
+from forwarder.utils import extract_links, is_amazon_link
 
 
 class ParsedDeal:
