@@ -51,13 +51,13 @@ class Parser(abc.ABC):
     def parse_image(self, entities: Optional[List]) -> str:
         pass
 
-    def parse(self, message: Message):
+    def parse(self, event):
         return ParsedDeal(
-            self.parse_price(message.message),
-            self.parse_old_price(message.message),
-            self.parse_title(message.message),
-            self.parse_link(message.entities),
-            self.parse_image(message.media)
+            self.parse_price(event.message.message),
+            self.parse_old_price(event.message.message),
+            self.parse_title(event.message.message),
+            self.parse_link(event.message.entities),
+            self.parse_image(event.media.url)
         )
 
 

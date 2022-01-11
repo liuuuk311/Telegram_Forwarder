@@ -57,7 +57,7 @@ async def generic_handler(event: events.NewMessage.Event):
     channel_settings = MAPPINGS.get(event.chat_id)
     logger.info(f"Event media? {event.media}")
     if channel_settings:
-        parsed = channel_settings.parser.parse(event.message)
+        parsed = channel_settings.parser.parse(event)
         logger.info(f"Parsed deal: {parsed}")
         # await event.message.forward_to(channel_settings.destination_channel)
 
