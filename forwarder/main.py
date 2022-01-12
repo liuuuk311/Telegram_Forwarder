@@ -51,7 +51,7 @@ async def build_id_mappings():
 
     logger.info(f"Mappings: {MAPPINGS}")
 
-    await client.send_message(entity="@iamlucafpv", message="Test *bold* _italic_ ~strike~ `CODE`")
+    await client.send_message(entity="@iamlucafpv", message="Test **bold** <b>Bold</b> _italic_ ~strike~ `CODE`")
 
 
 @client.on(events.NewMessage)
