@@ -17,7 +17,7 @@ class Formatter(abc.ABC):
 class BasicDealFormatter(Formatter):
     title_emoji: str
     price_emoji: str
-    urgency_messages: List[str]
+    urgency_messages: List[str] = []
 
     def format_urgency(self) -> str:
         if not self.urgency_messages:
@@ -45,3 +45,6 @@ class BasicDealFormatter(Formatter):
 class GenericChannelFormatter(BasicDealFormatter):
     title_emoji = "🎯"
     price_emoji = "💰"
+    urgency_messages = [
+        "Pochi pezzi disponibili",
+    ]
