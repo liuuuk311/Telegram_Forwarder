@@ -59,7 +59,7 @@ async def generic_handler(event: events.NewMessage.Event):
 
     if channel_settings:
         parsed = await channel_settings.parser.parse(event)
-        formatter = FORMATTERS.get(event.chat_id)(parsed_deal=parsed)
+        formatter = FORMATTERS.get(channel_settings.destination_channel)(parsed_deal=parsed)
         msg = formatter.get_message_text()
         logger.info(f"Formatted deal: {msg}")
         # await event.message.forward_to(channel_settings.destination_channel)
