@@ -51,6 +51,8 @@ async def build_id_mappings():
 
     logger.info(f"Mappings: {MAPPINGS}")
 
+    await client.send_message(entity="@iamlucafpv", message="Test *bold* _italic_ ~strike~ `CODE`")
+
 
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
@@ -58,6 +60,7 @@ async def generic_handler(event: events.NewMessage.Event):
     channel_settings = MAPPINGS.get(event.chat_id)
 
     if channel_settings:
+        logger.info("Channel settings available!")
         parsed = await channel_settings.parser.parse(event)
         formatter = FORMATTERS.get(channel_settings.destination_channel)(parsed_deal=parsed)
         msg = formatter.get_message_text()
