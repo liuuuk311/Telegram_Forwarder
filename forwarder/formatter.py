@@ -25,10 +25,12 @@ class BasicDealFormatter(Formatter):
         return random.choice(self.urgency_messages)
 
     def format_title(self) -> str:
-        return f"{self.title_emoji} {self.deal.title}"
+        return f"{self.title_emoji} **{self.deal.title}**"
 
     def format_price(self):
-        return f"{self.price_emoji} {self.deal.price}"
+        if self.deal.old_price:
+            return f"{self.price_emoji} PREZZO SCONTATO: **{self.deal.price}** al posto di {self.deal.old_price}"
+        return f"{self.price_emoji} PREZZO: {self.deal.price}"
 
     def get_message_text(self) -> str:
         return f"""
