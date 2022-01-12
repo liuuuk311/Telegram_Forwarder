@@ -62,8 +62,9 @@ async def generic_handler(event: events.NewMessage.Event):
     if channel_settings:
         logger.info("Channel settings available!")
         parsed = await channel_settings.parser.parse(event)
-        formatter = FORMATTERS.get(channel_settings.destination_channel)(parsed_deal=parsed)
-        await client.send_message(entity=channel_settings.detination_channel, message=formatter.get_message_text())
+        if parsed.is_valid:
+            formatter = FORMATTERS.get(channel_settings.destination_channel)(parsed_deal=parsed)
+            await client.send_message(entity=channel_settings.detination_channel, message=formatter.get_message_text())
 
 
 client.loop.run_until_complete(build_id_mappings())
