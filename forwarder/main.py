@@ -4,7 +4,7 @@ from telethon.sessions import StringSession
 from telethon.sync import TelegramClient, events
 import requests
 
-from forwarder.settings import CHANNELS_MAPPING
+from forwarder.settings import CHANNELS_MAPPING, FORMATTERS
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -59,7 +59,9 @@ async def generic_handler(event: events.NewMessage.Event):
 
     if channel_settings:
         parsed = await channel_settings.parser.parse(event)
-        logger.info(f"Parsed deal: {parsed}")
+        formatter = FORMATTERS.get(event.chat_id)(parsed_deal=parsed)
+        msg = formatter.get_message_text()
+        logger.info(f"Formatted deal: {msg}")
         # await event.message.forward_to(channel_settings.destination_channel)
 
 

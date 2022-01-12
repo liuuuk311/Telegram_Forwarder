@@ -1,5 +1,6 @@
 from collections import namedtuple
 
+from forwarder.formatter import GenericChannelFormatter
 from forwarder.parser import MisterCoupon, SpaceCoupon
 
 TECH_GROUP = -785446862  # Offerte Rubate - Tech
@@ -23,3 +24,6 @@ CHANNELS_MAPPING = {
     # "@hardwareprogrammi": FPV_GROUP,
 }
 
+FORMATTERS = {
+    GENERIC_GROUP: GenericChannelFormatter,
+}
