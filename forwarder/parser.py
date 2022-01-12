@@ -150,3 +150,10 @@ class SpaceCoupon(AmazonLinkParserMixin, RegexParser):
 
     async def get_link(self, event) -> str:
         return extract_links(event.message.entities)[0]
+
+
+class MilkyWayModa(SpaceCoupon):
+    pass
+
+class AlienSales(SpaceCoupon):
+    pass
