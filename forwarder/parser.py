@@ -5,6 +5,8 @@ from typing import Optional
 
 from telethon import TelegramClient
 
+from forwarder.affiliate import overwrite_affiliate
+from forwarder.images import create_our_image, download_image
 from forwarder.utils import extract_links, is_amazon_link
 
 
@@ -116,7 +118,7 @@ class AmazonLinkParserMixin:
     @staticmethod
     def parse_link(link: str) -> str:
         if is_amazon_link(link):
-            return link
+            return overwrite_affiliate(link)
         return ""
 
 
@@ -126,7 +128,7 @@ class MisterCoupon(AmazonLinkParserMixin, RegexParser):
     title_pattern = re.compile(r"💥 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?%?\d?)*)\n")
 
     async def get_image(self, event) -> str:
-        return event.media.webpage.url
+        return create_our_image(download_image(event.media.webpage.url), threshold=234)
 
     def parse_image(self, url: str) -> Optional[str]:
         if url.startswith("https://images.zbcdn.ovh/"):
@@ -142,7 +144,7 @@ class SpaceCoupon(AmazonLinkParserMixin, RegexParser):
     title_pattern = re.compile(r"🛒 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?%?\d?)*)\n")
 
     async def get_image(self, event) -> str:
-        return await self.client.download_media(event.message.media)
+        return create_our_image(await self.client.download_media(event.message.media), threshold=150)
 
     def parse_image(self, url: str) -> Optional[str]:
         return url
@@ -153,6 +155,7 @@ class SpaceCoupon(AmazonLinkParserMixin, RegexParser):
 
 class MilkyWayModa(SpaceCoupon):
     pass
+
 
 class AlienSales(SpaceCoupon):
     pass

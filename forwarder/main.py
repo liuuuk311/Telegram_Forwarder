@@ -81,7 +81,7 @@ async def test(event):
             logger.info("Parsed message is valid!")
             formatter = FORMATTERS.get(
                 channel_settings.destination_channel
-            )(parsed_deal=parsed, crop_factor=channel_settings.image_crop_factor)
+            )(parsed_deal=parsed)
             await client.send_message(
                 entity=channel_settings.destination_channel,
                 message=formatter.get_message_text(),

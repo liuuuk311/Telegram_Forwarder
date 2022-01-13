@@ -1,4 +1,6 @@
 import math
+import random
+import string
 from collections import namedtuple
 from typing import Optional
 
@@ -53,13 +55,9 @@ def create_our_image(image_filename: str, threshold: int, is_debug: bool = False
     x_offset = int(math.floor(template.shape[1] / 2)) - int(math.floor(img.shape[1] / 2))
     y_offset = int(math.floor(template.shape[0] / 2)) - int(math.floor(img.shape[0] / 2))
     template[y_offset:y_offset + img.shape[0], x_offset:x_offset + img.shape[1]] = img
-
-    # cv2.imwrite(image_filename, template)
-    if is_debug:
-        cv2.imshow("Merged", template)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-    return image_filename
+    output_filename = ''.join(random.choices(string.ascii_letters, k=15)) + '.png'
+    cv2.imwrite(output_filename, template)
+    return output_filename
 
 
 if __name__ == '__main__':
@@ -76,4 +74,4 @@ if __name__ == '__main__':
     # for url in test_img:
     #     create_our_image(download_image(url), is_debug=True)
 
-    create_our_image("./t1.jpeg", is_debug=True)
+    create_our_image("./t1.jpeg", is_debug=True, threshold=150)
