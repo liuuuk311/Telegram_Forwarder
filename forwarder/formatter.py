@@ -9,7 +9,7 @@ from forwarder.parser import ParsedDeal
 class Formatter(abc.ABC):
     def __init__(self, parsed_deal: ParsedDeal):
         self.deal = parsed_deal
-        self._prepare_deal()
+        # self._prepare_deal()
 
     def _prepare_deal(self):
         self.deal.link = overwrite_affiliate(self.deal.link)
