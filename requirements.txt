@@ -1,4 +1,4 @@
 telethon==1.24.0
 requests
 cryptg
-opencv-python
+opencv-python-headless==4.2.0.32

@@ -51,12 +51,8 @@ def create_our_image(image_filename: str, is_debug: bool = False):
     x_offset = int(math.floor(template.shape[1] / 2)) - int(math.floor(img.shape[1] / 2))
     y_offset = int(math.floor(template.shape[0] / 2)) - int(math.floor(img.shape[0] / 2))
     template[y_offset:y_offset + img.shape[0], x_offset:x_offset + img.shape[1]] = img
-    if is_debug:
-        cv2.imshow("Merged", template)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-    else:
-        cv2.imwrite(image_filename, template)
+
+    cv2.imwrite(image_filename, template)
 
     return image_filename
 
