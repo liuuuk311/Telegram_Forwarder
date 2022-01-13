@@ -49,8 +49,11 @@ def find_biggest_object(image_filename: str, threshold: int):
           ]
 
 
-def create_our_image(image_filename: str, threshold: int, template_name: str = "template.png"):
-    img = find_biggest_object(image_filename, threshold)
+def create_our_image(image_filename: str, threshold: int, template_name: str = "template.png", crop: bool = True):
+    if not crop:
+        img = cv2.imread(image_filename)
+    else:
+        img = find_biggest_object(image_filename, threshold)
     template = cv2.imread(template_name)
     x_offset = int(math.floor(template.shape[1] / 2)) - int(math.floor(img.shape[1] / 2))
     y_offset = int(math.floor(template.shape[0] / 2)) - int(math.floor(img.shape[0] / 2))

@@ -71,6 +71,8 @@ async def generic_handler(event: events.NewMessage.Event):
                 link_preview=False,
                 file=parsed.image
             )
+        else:
+            logger.warning(f"Parsed messaged NOT VALID: {parsed}")
 
 
 client.loop.run_until_complete(build_id_mappings())

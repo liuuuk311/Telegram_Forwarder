@@ -1,7 +1,7 @@
 from collections import namedtuple
 
 from forwarder.formatter import GenericChannelFormatter
-from forwarder.parser import MisterCoupon, SpaceCoupon, MilkyWayModa, AlienSales, OfferteModa
+from forwarder.parser import MisterCoupon, SpaceCoupon, MilkyWayModa, AlienSales, OfferteModa, OfferteTech, Prodigeek
 
 TECH_GROUP = -785446862  # Offerte Rubate - Tech
 GENERIC_GROUP = -786771026  # Offerte Rubate - Generiche
@@ -17,6 +17,8 @@ CHANNELS_MAPPING = {
     "@SpaceCoupon": ChannelSettings(GENERIC_GROUP, SpaceCoupon()),
     "@AlienSalesOfferte": ChannelSettings(GENERIC_GROUP, AlienSales()),
 
+    "@offertepuntotech": ChannelSettings(TECH_GROUP, OfferteTech()),
+    "@prodigeekOfferte": ChannelSettings(TECH_GROUP, Prodigeek()),
 
     "@MilkyWayShopping_Moda": ChannelSettings(FASHION_GROUP, MilkyWayModa()),
     "@offertadelgiornomoda": ChannelSettings(FASHION_GROUP, OfferteModa()),

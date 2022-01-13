@@ -7,7 +7,7 @@ from telethon import TelegramClient
 
 from forwarder.affiliate import overwrite_affiliate
 from forwarder.images import create_our_image, download_image
-from forwarder.utils import extract_links, is_amazon_link
+from forwarder.utils import extract_links, is_amazon_link, get_amazon_image_from_page
 
 
 class ParsedDeal:
@@ -98,7 +98,7 @@ class TextParser(Parser, ABC):
 
 class RegexParser(TextParser, ABC):
     price_pattern: re.Pattern
-    old_price_pattern: re.Pattern
+    old_price_pattern: Optional[re.Pattern]
     title_pattern: re.Pattern
 
     def parse_price(self, text: str) -> str:
@@ -106,6 +106,8 @@ class RegexParser(TextParser, ABC):
         return match and match.group(1)
 
     def parse_old_price(self, text: str) -> str:
+        if not self.old_price_pattern:
+            return
         match = re.search(self.old_price_pattern, text)
         return match and match.group(1)
 
@@ -176,3 +178,38 @@ class OfferteModa(AmazonLinkParserMixin, RegexParser):
 
     async def get_link(self, event) -> str:
         return extract_links(event.message.entities)[0]
+
+
+class OfferteTech(AmazonLinkParserMixin, RegexParser):
+    price_pattern = re.compile(r"💶 (\d+(,\d{2}?)€)")
+    old_price_pattern = re.compile(r"invece di (\d+(,\d{2})€)!")
+
+    def parse_title(self, text: str) -> str:
+        return text.split("\n")[0]
+
+    async def get_image(self, event) -> str:
+        url = get_amazon_image_from_page(await self.get_link(event))
+        return create_our_image(await self.client.download_media(url), threshold=150, crop=False)
+
+    def parse_image(self, url: str) -> Optional[str]:
+        return url
+
+    async def get_link(self, event) -> str:
+        return extract_links(event.message.entities)[0]
+
+
+class Prodigeek(AmazonLinkParserMixin, RegexParser):
+    price_pattern = re.compile(r"💰 Prezzo: (\d+(,\d{2}?)€)")
+
+    def parse_title(self, text: str) -> str:
+        return text.split("\n")[0]
+
+    async def get_image(self, event) -> str:
+        url = get_amazon_image_from_page(await self.get_link(event))
+        return create_our_image(await self.client.download_media(url), threshold=150, crop=False)
+
+    def parse_image(self, url: str) -> Optional[str]:
+        return url
+
+    async def get_link(self, event) -> str:
+        return extract_links(event.message.entities)[1]
