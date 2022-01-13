@@ -2,12 +2,17 @@ import abc
 import random
 from typing import List
 
+from forwarder.affiliate import overwrite_affiliate
 from forwarder.parser import ParsedDeal
 
 
 class Formatter(abc.ABC):
     def __init__(self, parsed_deal: ParsedDeal):
         self.deal = parsed_deal
+        self._prepare_deal()
+
+    def _prepare_deal(self):
+        self.deal.link = overwrite_affiliate(self.deal.link)
 
     @abc.abstractmethod
     def get_message_text(self) -> str:
@@ -37,15 +42,7 @@ class BasicDealFormatter(Formatter):
         return f"{self.link_emoji or ''} {self.deal.link}"
 
     def get_message_text(self) -> str:
-        return f"""
-        {self.format_urgency()}
-        
-        {self.format_title()}
-        
-        {self.format_price()} 
-        
-        {self.format_link()}
-        """
+        return f"{self.format_urgency()}\n\n{self.format_title()}\n\n{self.format_price()}\n\n{self.format_link()}"
 
 
 class GenericChannelFormatter(BasicDealFormatter):
