@@ -142,8 +142,7 @@ class SpaceCoupon(AmazonLinkParserMixin, RegexParser):
     title_pattern = re.compile(r"🛒 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?%?\d?)*)\n")
 
     async def get_image(self, event) -> str:
-        await self.client.download_media(event.message.media)
-        return "downloaded"
+        return await self.client.download_media(event.message.media)
 
     def parse_image(self, url: str) -> Optional[str]:
         return url

@@ -17,6 +17,7 @@ class Formatter(abc.ABC):
 class BasicDealFormatter(Formatter):
     title_emoji: str
     price_emoji: str
+    link_emoji: str
     urgency_messages: List[str] = []
 
     def format_urgency(self) -> str:
@@ -25,26 +26,37 @@ class BasicDealFormatter(Formatter):
         return random.choice(self.urgency_messages)
 
     def format_title(self) -> str:
-        return f"{self.title_emoji} **{self.deal.title}**"
+        return f"{self.title_emoji or ''} **{self.deal.title}**"
 
     def format_price(self):
         if self.deal.old_price:
-            return f"{self.price_emoji} PREZZO SCONTATO: **{self.deal.price}** al posto di {self.deal.old_price}"
-        return f"{self.price_emoji} PREZZO: {self.deal.price}"
+            return f"{self.price_emoji or ''} PREZZO: **{self.deal.price}** al posto di {self.deal.old_price}"
+        return f"{self.price_emoji or ''} PREZZO: {self.deal.price}"
+
+    def format_link(self):
+        return f"{self.link_emoji or ''} {self.deal.link}"
 
     def get_message_text(self) -> str:
         return f"""
-            {self.format_urgency()}
-            
-            {self.format_title()}
-            
-            {self.format_price()} 
+        {self.format_urgency()}
+        
+        {self.format_title()}
+        
+        {self.format_price()} 
+        
+        {self.format_link()}
         """
 
 
 class GenericChannelFormatter(BasicDealFormatter):
     title_emoji = "🎯"
     price_emoji = "💰"
+    link_emoji = "🔗"
     urgency_messages = [
-        "Pochi pezzi disponibili",
+        "⏰ **OFFERTA A TEMPO LIMITATO** ⏰",
+        "⚡️ **OFFERTA LAMPO** ⚡️",
+        "💣 **PREZZO BOMBA** 💣",
+        "🤯 **CHE OFFERTA** 🤯",
+        "‼️ **DA NON FARSI SCAPPARE** ‼️",
+        "⏳ **POCHI PEZZI DISPONIBILI** ⏳",
     ]

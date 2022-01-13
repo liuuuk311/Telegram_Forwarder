@@ -80,7 +80,12 @@ async def test(event):
         if parsed.is_valid:
             logger.info("Parsed message is valid!")
             formatter = FORMATTERS.get(channel_settings.destination_channel)(parsed_deal=parsed)
-            await client.send_message(entity=channel_settings.destination_channel, message=formatter.get_message_text())
+            await client.send_message(
+                entity=channel_settings.destination_channel,
+                message=formatter.get_message_text(),
+                link_preview=False,
+                file=parsed.image
+            )
 
 
 client.loop.run_until_complete(build_id_mappings())
