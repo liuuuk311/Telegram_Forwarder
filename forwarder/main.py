@@ -68,7 +68,7 @@ async def build_id_mappings():
 
 @client.on(events.NewMessage(from_users=["@iamlucafpv"]))
 async def test(event):
-    testing = "@SpaceCoupon"
+    testing = "@AlienSalesOfferte"
     entity = await client.get_entity(testing)
     peer_id = await client.get_peer_id(entity)
     channel_settings = MAPPINGS.get(peer_id)
