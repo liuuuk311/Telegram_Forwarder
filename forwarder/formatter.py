@@ -3,6 +3,7 @@ import random
 from typing import List
 
 from forwarder.affiliate import overwrite_affiliate
+from forwarder.images import create_our_image
 from forwarder.parser import ParsedDeal
 
 
@@ -13,6 +14,7 @@ class Formatter(abc.ABC):
 
     def _prepare_deal(self):
         self.deal.link = overwrite_affiliate(self.deal.link)
+        self.deal.image = create_our_image(self.deal.image)
 
     @abc.abstractmethod
     def get_message_text(self) -> str:
