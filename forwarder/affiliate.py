@@ -4,9 +4,6 @@ import requests
 import re
 from urllib.parse import urlparse, parse_qsl, urlencode, urlunparse
 
-from affiliate.aliexpress import affiliate_aliexpress
-from affiliate.exceptions import AffiliateError
-
 token = '961b2a0b2de7548fd8a6f58c86359849dafd374a'
 
 API_URL_BITLINKS = "https://api-ssl.bitly.com/v4/bitlinks"
