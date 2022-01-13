@@ -159,3 +159,20 @@ class MilkyWayModa(SpaceCoupon):
 
 class AlienSales(SpaceCoupon):
     pass
+
+
+class OfferteModa(AmazonLinkParserMixin, RegexParser):
+    price_pattern = re.compile(r"a soli (\d+(,\d{2}?)€)")
+    old_price_pattern = re.compile(r"da (\d+(,\d{2})€)!")
+
+    def parse_title(self, text: str) -> str:
+        return text.split("\n")[0]
+
+    async def get_image(self, event) -> str:
+        return create_our_image(await self.client.download_media(event.message.media), threshold=150)
+
+    def parse_image(self, url: str) -> Optional[str]:
+        return url
+
+    async def get_link(self, event) -> str:
+        return extract_links(event.message.entities)[0]
