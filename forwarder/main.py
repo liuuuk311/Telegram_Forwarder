@@ -68,7 +68,19 @@ async def build_id_mappings():
 
 @client.on(events.NewMessage(from_users=["@iamlucafpv"]))
 async def test(event):
-    await event.message.reply_to("test ok")
+    testing = "@SpaceCoupon"
+    entity = await client.get_entity(testing)
+    peer_id = await client.get_peer_id(entity)
+    channel_settings = MAPPINGS.get(peer_id)
+
+    if channel_settings:
+        logger.info("Channel settings available!")
+        parsed = await channel_settings.parser.parse(event)
+        logger.info(parsed)
+        if parsed.is_valid:
+            logger.info("Parsed message is valid!")
+            formatter = FORMATTERS.get(channel_settings.destination_channel)(parsed_deal=parsed)
+            await client.send_message(entity=channel_settings.destination_channel, message=formatter.get_message_text())
 
 
 client.loop.run_until_complete(build_id_mappings())
