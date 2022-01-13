@@ -9,7 +9,7 @@ from forwarder.parser import ParsedDeal
 class Formatter(abc.ABC):
     def __init__(self, parsed_deal: ParsedDeal):
         self.deal = parsed_deal
-        # self._prepare_deal()
+        self._prepare_deal()
 
     def _prepare_deal(self):
         self.deal.link = overwrite_affiliate(self.deal.link)
@@ -31,7 +31,7 @@ class BasicDealFormatter(Formatter):
         return random.choice(self.urgency_messages)
 
     def format_title(self) -> str:
-        return f"{self.title_emoji or ''} **{self.deal.title}**"
+        return f"{self.title_emoji or ''} __{self.deal.title}__"
 
     def format_price(self):
         if self.deal.old_price:
