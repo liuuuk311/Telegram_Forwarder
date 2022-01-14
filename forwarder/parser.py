@@ -4,6 +4,8 @@ from abc import ABC
 from typing import Optional
 
 from telethon import TelegramClient
+from telethon.tl.types import MessageEntityItalic
+from telethon.utils import get_inner_text
 
 from forwarder.affiliate import overwrite_affiliate
 from forwarder.images import create_our_image, download_image
@@ -185,8 +187,12 @@ class OutletPoint(AmazonLinkParserMixin, RegexParser):
     old_price_pattern = re.compile(r"anziché (\d+(,\d{2})€)")
     amazon_link_pattern = re.compile(r"((https?:\/\/)?(amzn\.to)\/\w*)")
 
+    async def get_title(self, event) -> str:
+        filtered = filter(lambda x: isinstance(x, MessageEntityItalic), event.message.entities)
+        return get_inner_text(event.message.message, filtered)
+
     def parse_title(self, text: str) -> str:
-        return text.split("\n")[0]
+        return text
 
     async def get_image(self, event) -> str:
         url = get_amazon_image_from_page(await self.get_link(event))
