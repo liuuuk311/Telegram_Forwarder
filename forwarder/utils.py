@@ -25,7 +25,7 @@ def is_amazon_link(url: str) -> bool:
 
 def get_amazon_image_from_page(url: str) -> str:
     headers = {'User-Agent': DEFAULT_USER_AGENT}
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, allow_redirects=True)
     if response != 200:
         return ""
 
