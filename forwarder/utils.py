@@ -26,11 +26,9 @@ def is_amazon_link(url: str) -> bool:
 def get_amazon_image_from_page(url: str) -> str:
     headers = {'User-Agent': DEFAULT_USER_AGENT}
     response = requests.get(url, headers=headers, allow_redirects=True)
-    if response != 200:
+    if response.status_code != 200:
         return ""
 
     soup = BeautifulSoup(response.content, 'html.parser')
     img = soup.find("img", class_="a-dynamic-image")
     return img.get("src", "")
-
-
