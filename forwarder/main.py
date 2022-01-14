@@ -77,7 +77,7 @@ async def build_id_mappings():
 
 @client.on(events.NewMessage(from_users=["@iamlucafpv"]))
 async def test(event):
-    testing = "@OutletPoint"
+    testing = "@prodigeekOfferte"
     entity = await client.get_entity(testing)
     peer_id = await client.get_peer_id(entity)
 
