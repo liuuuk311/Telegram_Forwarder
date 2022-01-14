@@ -239,6 +239,4 @@ class Prodigeek(AmazonLinkParserMixin, RegexParser):
         return url
 
     async def get_link(self, event) -> str:
-        links = extract_links(event.message.entities)
-        print(links)
-        return links[1]
+        return extract_links(event.message.entities)[1]

@@ -20,7 +20,7 @@ def extract_links(entities: Optional[List[TypeMessageEntity]]) -> List[str]:
 
 
 def is_amazon_link(url: str) -> bool:
-    return url.startswith("https://www.amazon.it/dp/") or url.startswith("https://amzn.to")
+    return url.startswith("https://www.amazon.it/") or url.startswith("https://amzn.to")
 
 
 def get_amazon_image_from_page(url: str) -> str:
