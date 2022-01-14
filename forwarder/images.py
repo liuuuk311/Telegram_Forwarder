@@ -49,7 +49,7 @@ def find_biggest_object(image_filename: str, threshold: int):
           ]
 
 
-def create_our_image(image_filename: str, threshold: int, template_name: str = "template.png", crop: bool = True):
+def create_our_image(image_filename: str, threshold: int = 200, template_name: str = "template.png", crop: bool = True):
     if not crop:
         img = cv2.imread(image_filename)
     else:
