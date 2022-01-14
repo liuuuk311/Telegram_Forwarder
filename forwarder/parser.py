@@ -29,7 +29,7 @@ class ParsedDeal:
 
     @property
     def is_valid(self):
-        return self.title and self.price and self.link
+        return self.title and self.price and self.link and self.image
 
 
 class Parser(abc.ABC):

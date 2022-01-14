@@ -77,7 +77,7 @@ async def build_id_mappings():
 
 @client.on(events.NewMessage(from_users=["@iamlucafpv"]))
 async def test(event):
-    testing = "@offertepuntotech"
+    testing = "@OutletPoint"
     entity = await client.get_entity(testing)
     peer_id = await client.get_peer_id(entity)
 
@@ -92,22 +92,13 @@ async def test(event):
             return
 
         logger.info("Parsed message is valid!")
-        formatter = FORMATTERS.get(
-            channel_settings.destination_channel
-        )(parsed_deal=parsed)
-        if parsed.image:
-            await client.send_message(
-                entity=channel_settings.destination_channel,
-                message=formatter.get_message_text(),
-                link_preview=False,
-                file=parsed.image
-            )
-        else:
-            await client.send_message(
-                entity=channel_settings.destination_channel,
-                message=formatter.get_message_text(),
-                link_preview=True,
-            )
+        formatter = FORMATTERS.get(channel_settings.destination_channel)(parsed_deal=parsed)
+        await client.send_message(
+            entity=channel_settings.destination_channel,
+            message=formatter.get_message_text(),
+            link_preview=False,
+            file=parsed.image
+        )
 
 
 client.loop.run_until_complete(build_id_mappings())
