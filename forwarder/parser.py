@@ -189,7 +189,7 @@ class OutletPoint(AmazonLinkParserMixin, RegexParser):
 
     async def get_image(self, event) -> str:
         url = get_amazon_image_from_page(await self.get_link(event))
-        return create_our_image(await self.client.download_media(url), threshold=150, crop=False)
+        return create_our_image(await self.client.download_media(url), crop=False)
 
     def parse_image(self, url: str) -> Optional[str]:
         return url
@@ -207,7 +207,7 @@ class OfferteTech(AmazonLinkParserMixin, RegexParser):
 
     async def get_image(self, event) -> str:
         url = get_amazon_image_from_page(await self.get_link(event))
-        return create_our_image(await self.client.download_media(url), threshold=150, crop=False)
+        return create_our_image(await self.client.download_media(url), crop=False)
 
     def parse_image(self, url: str) -> Optional[str]:
         return url
@@ -224,7 +224,7 @@ class Prodigeek(AmazonLinkParserMixin, RegexParser):
 
     async def get_image(self, event) -> str:
         url = get_amazon_image_from_page(await self.get_link(event))
-        return create_our_image(await self.client.download_media(url), threshold=150, crop=False)
+        return create_our_image(await self.client.download_media(url), crop=False)
 
     def parse_image(self, url: str) -> Optional[str]:
         return url

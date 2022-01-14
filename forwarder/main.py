@@ -52,10 +52,37 @@ async def build_id_mappings():
     logger.info(f"Mappings: {MAPPINGS}")
 
 
-@client.on(events.NewMessage)
-async def generic_handler(event: events.NewMessage.Event):
-    logger.info(f"New event from: {event.chat_id}")
-    channel_settings = MAPPINGS.get(event.chat_id)
+# @client.on(events.NewMessage)
+# async def generic_handler(event: events.NewMessage.Event):
+#     logger.info(f"New event from: {event.chat_id}")
+#     channel_settings = MAPPINGS.get(event.chat_id)
+#
+#     if channel_settings:
+#         logger.info("Channel settings available!")
+#         parsed = await channel_settings.parser.parse(event)
+#         if parsed.is_valid:
+#             logger.info("Parsed message is valid!")
+#             formatter = FORMATTERS.get(
+#                 channel_settings.destination_channel
+#             )(parsed_deal=parsed)
+#             await client.send_message(
+#                 entity=channel_settings.destination_channel,
+#                 message=formatter.get_message_text(),
+#                 link_preview=False,
+#                 file=parsed.image
+#             )
+#         else:
+#             logger.warning(f"Parsed messaged NOT VALID: {parsed}")
+
+
+@client.on(events.NewMessage(from_users=["@iamlucafpv"]))
+async def test(event):
+    testing = ""
+    entity = await client.get_entity(testing)
+    peer_id = await client.get_peer_id(entity)
+
+    logger.info(f"New event from: {peer_id}")
+    channel_settings = MAPPINGS.get(peer_id)
 
     if channel_settings:
         logger.info("Channel settings available!")
@@ -73,7 +100,6 @@ async def generic_handler(event: events.NewMessage.Event):
             )
         else:
             logger.warning(f"Parsed messaged NOT VALID: {parsed}")
-
 
 client.loop.run_until_complete(build_id_mappings())
 client.run_until_disconnected()

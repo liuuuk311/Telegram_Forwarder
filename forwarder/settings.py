@@ -24,6 +24,7 @@ CHANNELS_MAPPING = {
     "@MilkyWayShopping_Moda": ChannelSettings(FASHION_GROUP, MilkyWayModa()),
     "@offertadelgiornomoda": ChannelSettings(FASHION_GROUP, OfferteModa()),
     "@OutletPoint": ChannelSettings(FASHION_GROUP, OutletPoint()),
+
     #
     # "@fpvmattia": FPV_GROUP,
     # "@hardwareprogrammi": FPV_GROUP,
