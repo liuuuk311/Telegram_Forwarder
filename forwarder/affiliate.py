@@ -62,6 +62,7 @@ def overwrite_affiliate(url):
     url_parts = list(urlparse(url))
     query = dict(parse_qsl(url_parts[4]))
     query.pop('rmmds', None)
+    query.pop('keywords', None)
     query.update(params)
 
     url_parts[4] = urlencode(query)
