@@ -107,7 +107,7 @@ class RegexParser(TextParser, ABC):
 
     def parse_old_price(self, text: str) -> str:
         if not self.old_price_pattern:
-            return
+            return ""
         match = re.search(self.old_price_pattern, text)
         return match and match.group(1)
 

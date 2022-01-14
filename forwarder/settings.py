@@ -33,4 +33,5 @@ CHANNELS_MAPPING = {
 FORMATTERS = {
     GENERIC_GROUP: GenericChannelFormatter,
     FASHION_GROUP: GenericChannelFormatter,
+    TECH_GROUP: GenericChannelFormatter,
 }
