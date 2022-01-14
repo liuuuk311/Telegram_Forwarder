@@ -64,7 +64,6 @@ async def generic_handler(event: events.NewMessage.Event):
             logger.warning(f"Parsed messaged NOT VALID: {parsed}")
             return
 
-        logger.info("Parsed message is valid!")
         formatter = FORMATTERS.get(channel_settings.destination_channel)(parsed_deal=parsed)
         await client.send_message(
             entity=channel_settings.destination_channel,
@@ -72,7 +71,7 @@ async def generic_handler(event: events.NewMessage.Event):
             link_preview=False,
             file=parsed.image
         )
-
+        logger.info("YEAH! Forward successful!")
 
 
 client.loop.run_until_complete(build_id_mappings())

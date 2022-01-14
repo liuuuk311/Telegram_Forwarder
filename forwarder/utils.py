@@ -27,8 +27,14 @@ def get_amazon_image_from_page(url: str) -> str:
     headers = {'User-Agent': DEFAULT_USER_AGENT}
     response = requests.get(url, headers=headers, allow_redirects=True)
     if response.status_code != 200:
+        logger.warning("Could not request the image from Amazon")
         return ""
 
     soup = BeautifulSoup(response.content, 'html.parser')
     img = soup.find("img", class_="a-dynamic-image")
-    return img.get("src", "")
+    img_url = img.get("src", "")
+    if not img_url:
+        logger.warning(f"Could not get the image from Amazon page soup was {img}")
+
+    return img_url
+

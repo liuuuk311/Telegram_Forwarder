@@ -11,6 +11,9 @@ DEFAULT_DOWNLOADED_IMAGE = "tmp.jpg"
 
 
 def download_image(url: str) -> Optional[str]:
+    if not url:
+        return
+
     response = requests.get(url)
     if response.status_code != 200:
         return
