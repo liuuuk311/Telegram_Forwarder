@@ -87,11 +87,15 @@ async def test(event):
     if channel_settings:
         logger.info("Channel settings available!")
         parsed = await channel_settings.parser.parse(event)
-        if parsed.is_valid:
-            logger.info("Parsed message is valid!")
-            formatter = FORMATTERS.get(
-                channel_settings.destination_channel
-            )(parsed_deal=parsed)
+        if not parsed.is_valid:
+            logger.warning(f"Parsed messaged NOT VALID: {parsed}")
+            return
+
+        logger.info("Parsed message is valid!")
+        formatter = FORMATTERS.get(
+            channel_settings.destination_channel
+        )(parsed_deal=parsed)
+        if parsed.image:
             await client.send_message(
                 entity=channel_settings.destination_channel,
                 message=formatter.get_message_text(),
@@ -99,7 +103,12 @@ async def test(event):
                 file=parsed.image
             )
         else:
-            logger.warning(f"Parsed messaged NOT VALID: {parsed}")
+            await client.send_message(
+                entity=channel_settings.destination_channel,
+                message=formatter.get_message_text(),
+                link_preview=True,
+            )
+
 
 client.loop.run_until_complete(build_id_mappings())
 client.run_until_disconnected()
