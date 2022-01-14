@@ -219,6 +219,7 @@ class OfferteTech(AmazonLinkParserMixin, RegexParser):
         return url
 
     async def get_link(self, event) -> str:
+        print(f"Entities: {event.message.entities}")
         return extract_links(event.message.entities)[0]
 
 
