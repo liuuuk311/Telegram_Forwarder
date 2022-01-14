@@ -63,18 +63,3 @@ def create_our_image(image_filename: str, threshold: int = 200, template_name: s
     return output_filename
 
 
-if __name__ == '__main__':
-    # test_img = [
-    #     "https://images.zbcdn.ovh/images/1099842631/1641827714699.jpg",
-    #     "https://images.zbcdn.ovh/images/1099842631/1641823116937.jpg",
-    #     "https://images.zbcdn.ovh/images/1099842631/1641724506467.jpg",
-    #     "https://images.zbcdn.ovh/images/1099842631/1641723985825.jpg",
-    #     "https://images.zbcdn.ovh/images/1099842631/1641882678308.jpg",
-    #     "https://images.zbcdn.ovh/images/1099842631/1641882618896.jpg",
-    #     "https://images.zbcdn.ovh/images/1099842631/1641882283051.jpg",
-    #     "https://images.zbcdn.ovh/images/1099842631/1641882070306.jpg"
-    # ]
-    # for url in test_img:
-    #     create_our_image(download_image(url), is_debug=True)
-
-    create_our_image("./t1.jpeg", is_debug=True, threshold=150)
