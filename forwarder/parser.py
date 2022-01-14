@@ -183,6 +183,7 @@ class OfferteModa(AmazonLinkParserMixin, RegexParser):
 class OutletPoint(AmazonLinkParserMixin, RegexParser):
     price_pattern = re.compile(r"💰 (\d+(,\d{2}?)€)")
     old_price_pattern = re.compile(r"anziché (\d+(,\d{2})€)")
+    amazon_link_pattern = re.compile(r"((https?:\/\/)?(amzn\.to)\/\w*)")
 
     def parse_title(self, text: str) -> str:
         return text.split("\n")[0]
@@ -195,7 +196,8 @@ class OutletPoint(AmazonLinkParserMixin, RegexParser):
         return url
 
     async def get_link(self, event) -> str:
-        return extract_links(event.message.entities)[1]
+        match = re.search(self.amazon_link_pattern, event.message.message)
+        return match and match.group(1)
 
 
 class OfferteTech(AmazonLinkParserMixin, RegexParser):
