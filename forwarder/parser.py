@@ -224,6 +224,7 @@ class OfferteTech(AmazonLinkParserMixin, RegexParser):
 
 class Prodigeek(AmazonLinkParserMixin, RegexParser):
     price_pattern = re.compile(r"💰 Prezzo: (\d+(,\d{2}?)€)")
+    old_price_pattern = None
 
     def parse_title(self, text: str) -> str:
         return text.split("\n")[0]
