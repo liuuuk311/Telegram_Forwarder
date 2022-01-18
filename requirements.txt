@@ -3,3 +3,4 @@ requests
 cryptg
 opencv-python-headless==4.2.0.32
 beautifulsoup4
+pillow

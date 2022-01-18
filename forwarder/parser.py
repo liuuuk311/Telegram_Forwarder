@@ -118,6 +118,24 @@ class RegexParser(TextParser, ABC):
         return match and match.group(1)
 
 
+class ImageCreatorMixin(Parser, ABC):
+    template_name: str = "template.png"
+
+    async def get_image(self, event) -> str:
+        url = get_amazon_image_from_page(await self.get_link(event))
+        if not url:
+            return ""
+        return create_our_image(
+            download_image(url),
+            template_name=self.template_name,
+            price=self.parse_price(await self.get_price(event)),
+            old_price=self.parse_old_price(await self.get_price(event)),
+        )
+
+    def parse_image(self, url: str) -> Optional[str]:
+        return url
+
+
 class AmazonLinkParserMixin:
     @staticmethod
     def parse_link(link: str) -> str:
@@ -126,32 +144,20 @@ class AmazonLinkParserMixin:
         return ""
 
 
-class MisterCoupon(AmazonLinkParserMixin, RegexParser):
+class MisterCoupon(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
     price_pattern = re.compile(r"⚡️(\d+(,\d{2})€)⚡️")
     old_price_pattern = re.compile(r"invece di (\d+(,\d{2})€)")
     title_pattern = re.compile(r"💥 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?%?\d?)*)\n")
-
-    async def get_image(self, event) -> str:
-        return create_our_image(download_image(event.media.webpage.url), threshold=234)
-
-    def parse_image(self, url: str) -> Optional[str]:
-        if url.startswith("https://images.zbcdn.ovh/"):
-            return url
 
     async def get_link(self, event) -> str:
         return extract_links(event.message.entities)[1]
 
 
-class SpaceCoupon(AmazonLinkParserMixin, RegexParser):
+class SpaceCoupon(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
     price_pattern = re.compile(r"💰 (\d+(,\d{2}?)€)")
     old_price_pattern = re.compile(r"anziché (\d+(,\d{2})€)!")
     title_pattern = re.compile(r"🛒 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?%?\d?)*)\n")
-
-    async def get_image(self, event) -> str:
-        return create_our_image(await self.client.download_media(event.message.media), threshold=150)
-
-    def parse_image(self, url: str) -> Optional[str]:
-        return url
+    template_name = "generic_template.jpeg"
 
     async def get_link(self, event) -> str:
         return extract_links(event.message.entities)[0]
@@ -165,27 +171,23 @@ class AlienSales(SpaceCoupon):
     pass
 
 
-class OfferteModa(AmazonLinkParserMixin, RegexParser):
+class OfferteModa(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
     price_pattern = re.compile(r"a soli (\d+(,\d{2}?)€)")
     old_price_pattern = re.compile(r"da (\d+(,\d{2})€)")
+    template_name = "fashion_template.jpeg"
 
     def parse_title(self, text: str) -> str:
         return text.split("\n")[0]
-
-    async def get_image(self, event) -> str:
-        return create_our_image(await self.client.download_media(event.message.media), threshold=150)
-
-    def parse_image(self, url: str) -> Optional[str]:
-        return url
 
     async def get_link(self, event) -> str:
         return extract_links(event.message.entities)[0]
 
 
-class OutletPoint(AmazonLinkParserMixin, RegexParser):
+class OutletPoint(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
     price_pattern = re.compile(r"💰 (\d+(,\d{2}?)€)")
     old_price_pattern = re.compile(r"anziché (\d+(,\d{2})€)")
     amazon_link_pattern = re.compile(r"((https?:\/\/)?(amzn\.to)\/\w*)")
+    template_name = "fashion_template.jpeg"
 
     async def get_title(self, event) -> str:
         filtered = filter(lambda x: isinstance(x, MessageEntityItalic), event.message.entities)
@@ -194,55 +196,30 @@ class OutletPoint(AmazonLinkParserMixin, RegexParser):
     def parse_title(self, text: str) -> str:
         return text
 
-    async def get_image(self, event) -> str:
-        url = get_amazon_image_from_page(await self.get_link(event))
-        if not url:
-            return ""
-        return create_our_image(download_image(url), crop=False)
-
-    def parse_image(self, url: str) -> Optional[str]:
-        return url
-
     async def get_link(self, event) -> str:
         match = re.search(self.amazon_link_pattern, event.message.message)
         return match and match.group(1)
 
 
-class OfferteTech(AmazonLinkParserMixin, RegexParser):
+class OfferteTech(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
     price_pattern = re.compile(r"💶 (\d+(,\d{2}?)€)")
     old_price_pattern = re.compile(r"invece di (\d+(,\d{2})€)")
+    template_name = "tech_template.jpeg"
 
     def parse_title(self, text: str) -> str:
         return text.split("\n")[0]
-
-    async def get_image(self, event) -> str:
-        url = get_amazon_image_from_page(await self.get_link(event))
-        if not url:
-            return ""
-        return create_our_image(download_image(url), crop=False)
-
-    def parse_image(self, url: str) -> Optional[str]:
-        return url
 
     async def get_link(self, event) -> str:
         return extract_links(event.message.entities)[1]
 
 
-class Prodigeek(AmazonLinkParserMixin, RegexParser):
+class Prodigeek(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
     price_pattern = re.compile(r"💰 Prezzo: (\d+(,\d{2}?)€)")
     old_price_pattern = None
+    template_name = "tech_template.jpeg"
 
     def parse_title(self, text: str) -> str:
         return text.split("\n")[0]
-
-    async def get_image(self, event) -> str:
-        url = get_amazon_image_from_page(await self.get_link(event))
-        if not url:
-            return ""
-        return create_our_image(download_image(url), crop=False)
-
-    def parse_image(self, url: str) -> Optional[str]:
-        return url
 
     async def get_link(self, event) -> str:
         return extract_links(event.message.entities)[1]
