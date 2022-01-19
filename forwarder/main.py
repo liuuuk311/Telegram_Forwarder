@@ -54,14 +54,16 @@ async def build_id_mappings():
 
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
-    logger.info(f"New event from: {event.chat_id}")
+    sender_username = event.get_sender().username
+    logger.info(f"New event from: {sender_username}")
     channel_settings = MAPPINGS.get(event.chat_id)
 
     if channel_settings:
         logger.info("Channel settings available!")
         parsed = await channel_settings.parser.parse(event)
         if not parsed.is_valid:
-            logger.warning(f"Parsed messaged NOT VALID: {parsed}")
+            logger.warning(f"Parsed messaged from {sender_username} and is NOT VALID: {parsed}")
+            logger.warning(f"REASON: {parsed.reason_not_valid}")
             return
 
         formatter = FORMATTERS.get(channel_settings.destination_channel)(parsed_deal=parsed)

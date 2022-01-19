@@ -32,8 +32,6 @@ def find_biggest_object(image_filename: str, threshold: int):
     img = cv2.imread(image_filename)
     _, thresh_gray = cv2.threshold(
         cv2.cvtColor(img, cv2.COLOR_BGR2GRAY),
-        # thresh=234, # MisterCoupon
-        # thresh=150, # SpaceCoupon
         thresh=threshold,
         maxval=255,
         type=cv2.THRESH_BINARY_INV
@@ -80,3 +78,10 @@ def create_our_image(image_filename: str, price: str, old_price: str, template_n
     my_image.save(output_filename)
 
     return output_filename
+
+
+if __name__ == '__main__':
+    create_our_image("test_images/img1.jpg", template_name="generic_template.jpeg", price="9.99", old_price="1000")
+    create_our_image("test_images/img2.jpg", template_name="fashion_template.jpeg", price="99.99", old_price="1000")
+    create_our_image("test_images/img3.jpg", template_name="tech_template.jpeg", price="999.99", old_price="1000")
+    create_our_image("test_images/img4.jpg", template_name="tech_template.jpeg", price="9999.99", old_price="1000")

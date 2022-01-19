@@ -1,7 +1,7 @@
 import abc
 import re
 from abc import ABC
-from typing import Optional
+from typing import Optional, List
 
 from telethon import TelegramClient
 from telethon.tl.types import MessageEntityItalic
@@ -19,6 +19,8 @@ class ParsedDeal:
     link: str
     image: str
 
+    mandatory_fields: List = ["price", "title", "link", "image"]
+
     def __init__(self, price, old_price, title, link, image):
         self.price = price
         self.old_price = old_price
@@ -30,8 +32,19 @@ class ParsedDeal:
         return f"title: {self.title} price: {self.price} old: {self.old_price} link: {self.link} image: {self.image}"
 
     @property
-    def is_valid(self):
-        return self.title and self.price and self.link and self.image
+    def is_valid(self) -> bool:
+        return all(getattr(self, field) for field in self.mandatory_fields)
+        # return self.title and self.price and self.link and self.image
+
+    @property
+    def reason_not_valid(self) -> Optional[str]:
+        if self.is_valid:
+            return None
+
+        missing_fields = [field for field in self.mandatory_fields if not getattr(self, field)]
+        return f"This deal is not valid because {missing_fields} are missing"
+
+
 
 
 class Parser(abc.ABC):
