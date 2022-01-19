@@ -1,6 +1,6 @@
 import logging
 import random
-from functools import cache
+from functools import lru_cache
 from typing import List, Optional
 
 import requests
@@ -15,7 +15,7 @@ logging.basicConfig(
 logger = logging.getLogger("Forwarder Bot")
 
 
-@cache
+@lru_cache
 def get_proxies():
     response = requests.get('https://www.sslproxies.org/')
     parser = fromstring(response.text)
