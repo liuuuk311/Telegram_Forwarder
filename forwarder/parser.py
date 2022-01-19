@@ -9,7 +9,7 @@ from telethon.utils import get_inner_text
 
 from forwarder.affiliate import overwrite_affiliate
 from forwarder.images import create_our_image, download_image
-from forwarder.utils import extract_links, is_amazon_link, get_amazon_image_from_page
+from forwarder.utils import extract_links, is_amazon_link, get_amazon_image_from_page, get_banggood_data, is_bg_link
 
 
 class ParsedDeal:
@@ -46,6 +46,9 @@ class ParsedDeal:
 
 class Parser(abc.ABC):
     client: TelegramClient
+
+    async def prepare_data(self, event):
+        pass
 
     @abc.abstractmethod
     def parse_price(self, text: str) -> str:
@@ -88,6 +91,7 @@ class Parser(abc.ABC):
         pass
 
     async def parse(self, event):
+        await self.prepare_data(event)
         return ParsedDeal(
             self.parse_price(await self.get_price(event)),
             self.parse_old_price(await self.get_price(event)),
@@ -131,8 +135,11 @@ class RegexParser(TextParser, ABC):
 class ImageCreatorMixin(Parser, ABC):
     template_name: str = "template.png"
 
+    async def get_image_url(self, event) -> str:
+        return get_amazon_image_from_page(await self.get_link(event))
+
     async def get_image(self, event) -> str:
-        url = get_amazon_image_from_page(await self.get_link(event))
+        url = await self.get_image_url(event)
         if not url:
             return ""
         return create_our_image(
@@ -201,7 +208,8 @@ class OutletPoint(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
 
     async def get_title(self, event) -> str:
         filtered = filter(lambda x: isinstance(x, MessageEntityItalic), event.message.entities)
-        return get_inner_text(event.message.message, filtered)
+        res = get_inner_text(event.message.message, filtered)
+        return res if not isinstance(res, list) else res[0]
 
     def parse_title(self, text: str) -> str:
         return text
@@ -243,3 +251,41 @@ class VideogiochiIT(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
 
     async def get_link(self, event) -> str:
         return extract_links(event.message.entities)[1]
+
+
+class BanggoodParser(ImageCreatorMixin):
+    scraped_data: dict
+    template_name = "generic_template.jpeg"
+
+    async def prepare_data(self, event):
+        self.scraped_data = get_banggood_data(self.parse_link(await self.get_link(event)))
+
+    async def get_image_url(self, event) -> str:
+        return self.scraped_data.get("image")
+
+    def parse_price(self, text: str) -> str:
+        return text
+
+    def parse_old_price(self, text: str) -> str:
+        return text
+
+    def parse_title(self, text: str) -> str:
+        return text
+
+    def parse_link(self, link: str) -> str:
+        if is_bg_link(link):
+            return link
+
+    async def get_price(self, event) -> str:
+        return self.scraped_data.get("price")
+
+    async def get_old_price(self, event) -> str:
+        return self.scraped_data.get("old_price")
+
+    async def get_title(self, event) -> str:
+        return self.scraped_data.get("title")
+
+    async def get_link(self, event):
+        return extract_links(event.message.entities)[0]
+
+

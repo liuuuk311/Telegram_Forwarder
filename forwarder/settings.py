@@ -1,8 +1,8 @@
 from collections import namedtuple
 
 from forwarder.formatter import GenericChannelFormatter
-from forwarder.parser import MisterCoupon, SpaceCoupon, MilkyWayModa, AlienSales, OfferteModa, OfferteTech, Prodigeek, \
-    OutletPoint, VideogiochiIT
+from forwarder.parser import SpaceCoupon, MilkyWayModa, AlienSales, OfferteModa, OfferteTech, Prodigeek, \
+    OutletPoint, VideogiochiIT, BanggoodParser
 
 TECH_GROUP = -785446862  # Offerte Rubate - Tech
 GENERIC_GROUP = -786771026  # Offerte Rubate - Generiche
@@ -26,9 +26,8 @@ CHANNELS_MAPPING = {
     "@offertadelgiornomoda": ChannelSettings(FASHION_GROUP, OfferteModa()),
     "@OutletPoint": ChannelSettings(FASHION_GROUP, OutletPoint()),
 
-    #
-    # "@fpvmattia": FPV_GROUP,
-    # "@hardwareprogrammi": FPV_GROUP,
+    "@fpvmattia": ChannelSettings(FPV_GROUP, BanggoodParser()),
+    "@hardwareprogrammi": ChannelSettings(FPV_GROUP, BanggoodParser()),
 }
 
 FORMATTERS = {
