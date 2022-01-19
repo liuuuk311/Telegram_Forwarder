@@ -54,7 +54,7 @@ async def build_id_mappings():
 
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
-    sender_username = event.get_sender().username
+    sender_username = (await event.get_sender()).username
     logger.info(f"New event from: {sender_username}")
     channel_settings = MAPPINGS.get(event.chat_id)
 
