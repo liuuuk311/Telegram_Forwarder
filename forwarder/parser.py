@@ -38,13 +38,10 @@ class ParsedDeal:
 
     @property
     def reason_not_valid(self) -> Optional[str]:
-        if self.is_valid:
-            return None
-
         missing_fields = [field for field in self.mandatory_fields if not getattr(self, field)]
+        if not missing_fields:
+            return
         return f"This deal is not valid because {missing_fields} are missing"
-
-
 
 
 class Parser(abc.ABC):
@@ -233,6 +230,16 @@ class Prodigeek(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
 
     def parse_title(self, text: str) -> str:
         return text.split("\n")[0]
+
+    async def get_link(self, event) -> str:
+        return extract_links(event.message.entities)[1]
+
+
+class VideogiochiIT(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
+    price_pattern = re.compile(r"⚡️(\d+(,\d{2}?)€)⚡️")
+    old_price_pattern = re.compile(r"invece di (\d+(,\d{2}?)€)")
+    template_name = "tech_template.jpeg"
+    title_pattern = re.compile(r"💥 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?%?\d?)*)\n")
 
     async def get_link(self, event) -> str:
         return extract_links(event.message.entities)[1]

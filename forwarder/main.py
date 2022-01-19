@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from telethon.sessions import StringSession
@@ -74,6 +75,7 @@ async def generic_handler(event: events.NewMessage.Event):
             file=parsed.image
         )
         logger.info("YEAH! Forward successful!")
+        await asyncio.sleep(5)
 
 
 client.loop.run_until_complete(build_id_mappings())
