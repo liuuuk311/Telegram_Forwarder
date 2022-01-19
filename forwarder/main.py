@@ -52,18 +52,14 @@ async def build_id_mappings():
 
     logger.info(f"Mappings: {MAPPINGS}")
 
+    logger.info(f"Check: {await client.get_entity('1238009951')}")
+
 
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
     sender = (await event.get_sender())
     logger.info(f"New event from: {sender.username}")
     channel_settings = MAPPINGS.get(event.chat_id)
-
-    if not sender.username:
-        await client.send_message(
-            entity="@iamlucafpv",
-            message=f"Got a message from {sender}"
-        )
 
     if channel_settings:
         logger.info("Channel settings available!")

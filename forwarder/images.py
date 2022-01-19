@@ -27,7 +27,7 @@ def download_image(url: str) -> Optional[str]:
 def create_our_image(image_filename: str, price: str, old_price: str, template_name: str = "template.png"):
     img = cv2.imread(image_filename)
 
-    scale_percent = 60
+    scale_percent = 55
     width = int(img.shape[1] * scale_percent / 100)
     height = int(img.shape[0] * scale_percent / 100)
     dim = (width, height)
