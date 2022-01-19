@@ -1,9 +1,28 @@
 import math
 import random
 import string
+from typing import Optional
 
 from PIL import Image, ImageFont, ImageDraw
 import cv2
+
+import requests
+
+DEFAULT_DOWNLOADED_IMAGE = "tmp.jpg"
+
+
+def download_image(url: str) -> Optional[str]:
+    if not url:
+        return
+
+    response = requests.get(url)
+    if response.status_code != 200:
+        return
+
+    with open(DEFAULT_DOWNLOADED_IMAGE, 'wb') as f:
+        f.write(response.content)
+    return DEFAULT_DOWNLOADED_IMAGE
+
 
 
 def create_our_image(image_filename: str, price: str, old_price: str, template_name: str = "template.png"):
