@@ -55,15 +55,21 @@ async def build_id_mappings():
 
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
-    sender_username = (await event.get_sender()).username
-    logger.info(f"New event from: {sender_username}")
+    sender = (await event.get_sender())
+    logger.info(f"New event from: {sender.username}")
     channel_settings = MAPPINGS.get(event.chat_id)
+
+    if not sender.username:
+        await client.send_message(
+            entity="@iamlucafpv",
+            message=f"Got a message from {sender}"
+        )
 
     if channel_settings:
         logger.info("Channel settings available!")
         parsed = await channel_settings.parser.parse(event)
         if not parsed.is_valid:
-            logger.warning(f"Parsed messaged from {sender_username} and is NOT VALID: {parsed}")
+            logger.warning(f"Parsed messaged from {sender.username} and is NOT VALID: {parsed}")
             logger.warning(f"REASON: {parsed.reason_not_valid}")
             return
 
