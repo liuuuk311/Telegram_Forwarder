@@ -1,18 +1,33 @@
 import logging
 import random
+from functools import cache
 from typing import List, Optional
 
 import requests
+from lxml.html import fromstring
 from telethon.tl.types import MessageEntityTextUrl, TypeMessageEntity
 from bs4 import BeautifulSoup
+
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 logger = logging.getLogger("Forwarder Bot")
 
-DEFAULT_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) " \
-                     "Chrome/83.0.4103.97 Safari/537.36 "
+
+@cache
+def get_proxies():
+    response = requests.get('https://www.sslproxies.org/')
+    parser = fromstring(response.text)
+    return {
+        f"https://{row.xpath('.//td[1]/text()')[0]}:{row.xpath('.//td[2]/text()')[0]}"
+        for row in parser.xpath('//tbody/tr')[:15]
+    }
+
+
+def select_random_proxy():
+    proxy = random.choice(list(get_proxies()))
+    return {"http": proxy}
 
 
 def extract_links(entities: Optional[List[TypeMessageEntity]]) -> List[str]:
@@ -25,7 +40,8 @@ def is_amazon_link(url: str) -> bool:
 
 
 def get_amazon_image_from_page(url: str) -> str:
-    headers = {'User-Agent': get_random_user_agent()}
+    headers = {'User-Agent': get_random_user_agent(), 'Accept-Language': 'it-IT'}
+    proxies = select_random_proxy()
     cookies = {
         'i18n-prefs': 'EUR',
         'session-id': '257-4568920-4927623',
@@ -34,7 +50,7 @@ def get_amazon_image_from_page(url: str) -> str:
         'csm-hit': 'tb:42MCAT6J68FH53DB7H4H+s-50HZ2JX85Q901CGKTEE8|1642166515597&t:1642166515597&adb:adblk_no',
         'session-id-time': '2082787201l'
     }
-    response = requests.get(url, headers=headers, allow_redirects=True, cookies=cookies)
+    response = requests.get(url, headers=headers, allow_redirects=True, cookies=cookies, proxies=proxies)
     if response.status_code != 200:
         logger.warning("Could not request the image from Amazon")
         return ""
@@ -65,7 +81,3 @@ def get_random_user_agent():
         "Mozilla/5.0 (X11; CrOS x86_64 8172.45.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.64 Safari/537.36",
         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36",
     ])
-
-
-if __name__ == '__main__':
-    print(get_amazon_image_from_page("https://www.amazon.it/gp/product/B09P3SGP2B?m=A11IL2PNWYJU7H&linkCode=osi&th=1&psc=1&tag=prodigeekofferte-21&keywords=Ulteriori+offerte+su+https%3A%2F%2Ft.me%2FprodigeekOfferte"))
