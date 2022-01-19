@@ -37,7 +37,7 @@ def create_our_image(image_filename: str, price: str, old_price: str, template_n
 
     template = cv2.imread(template_name)
     x_offset = 500 - int(math.floor(img.shape[1] / 2))
-    y_offset = int(math.floor(template.shape[0] / 2)) - int(math.floor(img.shape[0] / 2)) + 70
+    y_offset = int(math.floor(template.shape[0] / 2)) - int(math.floor(img.shape[0] / 2))
     template[y_offset:y_offset + img.shape[0], x_offset:x_offset + img.shape[1]] = img
     output_filename = ''.join(random.choices(string.ascii_letters, k=15)) + '.png'
     cv2.imwrite(output_filename, template)
