@@ -52,9 +52,6 @@ async def build_id_mappings():
 
     logger.info(f"Mappings: {MAPPINGS}")
 
-    logger.info(f"Check: {await client.get_entity('1238009951')}")
-
-
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
     sender = (await event.get_sender())
