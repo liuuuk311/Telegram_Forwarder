@@ -54,13 +54,15 @@ def image_resize(image, width=None, height=None, inter=cv2.INTER_AREA):
 
 
 def create_our_image(image_filename: str, price: str, old_price: str, template_name: str = "template.png"):
-    img = cv2.imread(image_filename)
+    img = cv2.imread(image_filename, cv2.IMREAD_UNCHANGED)
+    if img.shape[0] > img.shape[1]:
+        img = image_resize(img, height=700)
+    else:
+        img = image_resize(img, width=1000)
 
-    img = image_resize(img, height=700)
-
-    template = cv2.imread(template_name)
-    x_offset = 500 - int(math.floor(img.shape[1] / 2))
-    y_offset = int(math.floor(template.shape[0] / 2)) - int(math.floor(img.shape[0] / 2)) + 100
+    template = cv2.imread(template_name, cv2.IMREAD_UNCHANGED)
+    x_offset = max(500 - int(math.floor(img.shape[1] / 2)), 0)
+    y_offset = max(int(math.floor(template.shape[0] / 2)) - int(math.floor(img.shape[0] / 2)) + 100, 0)
     template[y_offset:y_offset + img.shape[0], x_offset:x_offset + img.shape[1]] = img
     output_filename = ''.join(random.choices(string.ascii_letters, k=15)) + '.png'
     cv2.imwrite(output_filename, template)
@@ -80,8 +82,7 @@ def create_our_image(image_filename: str, price: str, old_price: str, template_n
 if __name__ == '__main__':
     from utils import get_amazon_image_from_page
     urls = [
-        "https://www.amazon.it/dp/B08YQJ73DX/?tag=nndvd-21&psc=1",
-        "https://www.amazon.it/dp/B08BJ383TL?tag=oftech-21&linkCode=ogi&th=1&psc=1"
+        "https://www.amazon.it/dp/B07Z9M6VL6/?tag=jikemaster-21&psc=1",
     ]
     for url in urls:
         img_url = download_image(get_amazon_image_from_page(url))
