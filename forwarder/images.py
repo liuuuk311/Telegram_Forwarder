@@ -56,9 +56,9 @@ def image_resize(image, width=None, height=None, inter=cv2.INTER_AREA):
 def create_our_image(image_filename: str, price: str, old_price: str, template_name: str = "template.png"):
     img = cv2.imread(image_filename, cv2.IMREAD_UNCHANGED)
     if img.shape[0] > img.shape[1]:
-        img = image_resize(img, height=700)
+        img = image_resize(img, height=600)
     else:
-        img = image_resize(img, width=700)
+        img = image_resize(img, width=600)
 
     template = cv2.imread(template_name, cv2.IMREAD_UNCHANGED)
     x_offset = max(500 - int(math.floor(img.shape[1] / 2)), 0)
@@ -83,6 +83,7 @@ if __name__ == '__main__':
     from utils import get_amazon_image_from_page
     urls = [
         "https://www.amazon.it/dp/B09645LC84/?tag=jikemaster-21&psc=1",
+        "https://www.amazon.it/dp/B08WPYRKHV?tag=oftech-21&linkCode=ogi&th=1&psc=1",
     ]
     for url in urls:
         img_url = download_image(get_amazon_image_from_page(url))
