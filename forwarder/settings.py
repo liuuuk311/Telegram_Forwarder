@@ -2,7 +2,7 @@ from collections import namedtuple
 
 from forwarder.formatter import GenericChannelFormatter
 from forwarder.parser import SpaceCoupon, MilkyWayModa, AlienSales, OfferteModa, OfferteTech, Prodigeek, \
-    OutletPoint, VideogiochiIT, BanggoodParser, MisterCoupon
+    OutletPoint, VideogiochiIT, BanggoodParser
 
 TECH_GROUP = -785446862  # Offerte Rubate - Tech
 GENERIC_GROUP = -786771026  # Offerte Rubate - Generiche
@@ -14,7 +14,6 @@ FPV_GROUP = -563703943  # Offerte Rubate (FPV)
 ChannelSettings = namedtuple("ChannelSettings", ['destination_channel', "parser"])
 
 CHANNELS_MAPPING = {
-    "@mister_coupon": ChannelSettings(GENERIC_GROUP, MisterCoupon()),
     "@SpaceCoupon": ChannelSettings(GENERIC_GROUP, SpaceCoupon()),
     "@AlienSalesOfferte": ChannelSettings(GENERIC_GROUP, AlienSales()),
 
