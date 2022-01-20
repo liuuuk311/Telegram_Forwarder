@@ -36,6 +36,7 @@ CHANNELS_MAPPING = {
     "@fpvmattia": ChannelSettings(FPV_GROUP, BanggoodParser()),
     "@hardwareprogrammi": ChannelSettings(FPV_GROUP, BanggoodParser()),
     "@bestFPVdeals": ChannelSettings(FPV_GROUP, BanggoodParser()),
+    "@RHobbyOfferte": ChannelSettings(FPV_GROUP, BanggoodParser()),
 }
 
 FORMATTERS = {
