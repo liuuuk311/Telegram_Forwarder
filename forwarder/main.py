@@ -52,6 +52,7 @@ async def build_id_mappings():
 
     logger.info(f"Mappings: {MAPPINGS}")
 
+
 @client.on(events.NewMessage)
 async def generic_handler(event: events.NewMessage.Event):
     sender = (await event.get_sender())

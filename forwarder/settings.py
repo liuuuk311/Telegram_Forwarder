@@ -28,10 +28,12 @@ CHANNELS_MAPPING = {
 
     "@fpvmattia": ChannelSettings(FPV_GROUP, BanggoodParser()),
     "@hardwareprogrammi": ChannelSettings(FPV_GROUP, BanggoodParser()),
+    "@bestFPVdeals": ChannelSettings(FPV_GROUP, BanggoodParser()),
 }
 
 FORMATTERS = {
     GENERIC_GROUP: GenericChannelFormatter,
     FASHION_GROUP: GenericChannelFormatter,
     TECH_GROUP: GenericChannelFormatter,
+    FPV_GROUP: GenericChannelFormatter,
 }

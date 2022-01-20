@@ -274,7 +274,7 @@ class BanggoodParser(ImageCreatorMixin):
 
     def parse_link(self, link: str) -> str:
         if is_bg_link(link):
-            return link
+            return overwrite_affiliate(link)
 
     async def get_price(self, event) -> str:
         return self.scraped_data.get("price")
