@@ -89,6 +89,7 @@ async def test(event: events.NewMessage.Event):
     if channel_settings:
         logger.info("Channel settings available!")
         parsed = await channel_settings.parser.parse(event)
+        logger.info(event.message.entities)
         if not parsed.is_valid:
             logger.warning(f"Parsed messaged from {sender.username} and is NOT VALID: {parsed}")
             logger.warning(f"REASON: {parsed.reason_not_valid}")
