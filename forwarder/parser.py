@@ -256,6 +256,9 @@ class VideogiochiIT(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
 class BanggoodParser(ImageCreatorMixin):
     scraped_data: dict
     template_name = "generic_template.jpeg"
+    link_pattern = re.compile(
+        r"(?P<url>https?:\/\/[^\s]+)|((https?:\/\/)?((bit\.ly)|(banggood\.app\.link)|(m\.banggood\.com)|(amzn\.to))\/\w*)"
+    )
 
     async def prepare_data(self, event):
         self.scraped_data = get_banggood_data(self.parse_link(await self.get_link(event)))
@@ -286,6 +289,7 @@ class BanggoodParser(ImageCreatorMixin):
         return self.scraped_data.get("title")
 
     async def get_link(self, event):
-        return extract_links(event.message.entities)[0]
+        match = re.search(self.link_pattern, event.message)
+        return match and match.group(1)
 
 

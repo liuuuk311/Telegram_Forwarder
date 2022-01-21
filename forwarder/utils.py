@@ -33,7 +33,7 @@ def select_random_proxy():
 
 def extract_links(entities: Optional[List[TypeMessageEntity]]) -> List[str]:
     filtered = filter(
-        lambda x: isinstance(x, (MessageEntityTextUrl, MessageEntityUrl)),
+        lambda x: isinstance(x, MessageEntityTextUrl),
         entities,
     )
 
