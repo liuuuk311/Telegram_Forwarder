@@ -181,7 +181,7 @@ class SpaceCoupon(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
 
 
 class MilkyWayModa(SpaceCoupon):
-    pass
+    template_name = "fashion_template.jpeg"
 
 
 class AlienSales(SpaceCoupon):
