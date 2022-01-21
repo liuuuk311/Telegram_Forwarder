@@ -53,11 +53,38 @@ async def build_id_mappings():
     logger.info(f"Mappings: {MAPPINGS}")
 
 
-@client.on(events.NewMessage)
-async def generic_handler(event: events.NewMessage.Event):
+# @client.on(events.NewMessage)
+# async def generic_handler(event: events.NewMessage.Event):
+#     sender = (await event.get_sender())
+#     logger.info(f"New event from: {sender.username}")
+#     channel_settings = MAPPINGS.get(event.chat_id)
+#
+#     if channel_settings:
+#         logger.info("Channel settings available!")
+#         parsed = await channel_settings.parser.parse(event)
+#         if not parsed.is_valid:
+#             logger.warning(f"Parsed messaged from {sender.username} and is NOT VALID: {parsed}")
+#             logger.warning(f"REASON: {parsed.reason_not_valid}")
+#             return
+#
+#         formatter = FORMATTERS.get(channel_settings.destination_channel)(parsed_deal=parsed)
+#         await client.send_message(
+#             entity=channel_settings.destination_channel,
+#             message=formatter.get_message_text(),
+#             link_preview=False,
+#             file=parsed.image
+#         )
+#         logger.info("YEAH! Forward successful!")
+#         await asyncio.sleep(5)
+
+
+@client.on(events.NewMessage(from_users=["@iamlucafpv"]))
+async def test(event: events.NewMessage.Event):
     sender = (await event.get_sender())
     logger.info(f"New event from: {sender.username}")
-    channel_settings = MAPPINGS.get(event.chat_id)
+    entity = await client.get_entity("@fpvmattia")
+    peer_id = await client.get_peer_id(entity)
+    channel_settings = MAPPINGS.get(peer_id)
 
     if channel_settings:
         logger.info("Channel settings available!")
