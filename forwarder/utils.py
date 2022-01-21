@@ -1,4 +1,5 @@
 import logging
+import os
 import random
 from functools import lru_cache
 from typing import List, Optional, Dict
@@ -104,9 +105,9 @@ def get_banggood_data(url: str) -> Dict:
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--no-sandbox')
-    # chrome_options.binary_location = GOOGLE_CHROME_PATH
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_PATH")
     browser = webdriver.Chrome(
-        # execution_path=CHROMEDRIVER_PATH,
+        executable_path=os.environ.get("CHROMEDRIVER_PATH"),
         options=chrome_options
     )
     browser.get(prepare_bg_url(url))
