@@ -255,7 +255,7 @@ class VideogiochiIT(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
 
 class BanggoodParser(ImageCreatorMixin):
     scraped_data: dict
-    template_name = "generic_template.jpeg"
+    template_name = "fpv_template.jpeg"
     link_pattern = re.compile(
         r"(?P<url>https?:\/\/[^\s]+)|((https?:\/\/)?((bit\.ly)|(banggood\.app\.link)|(m\.banggood\.com)|(amzn\.to))\/\w*)"
     )
