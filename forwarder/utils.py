@@ -6,7 +6,7 @@ from typing import List, Optional, Dict
 import requests
 from lxml.html import fromstring
 from selenium import webdriver
-from telethon.tl.types import MessageEntityTextUrl, TypeMessageEntity
+from telethon.tl.types import MessageEntityTextUrl, TypeMessageEntity, MessageEntityUrl
 from bs4 import BeautifulSoup
 
 
@@ -32,7 +32,11 @@ def select_random_proxy():
 
 
 def extract_links(entities: Optional[List[TypeMessageEntity]]) -> List[str]:
-    filtered = filter(lambda x: isinstance(x, MessageEntityTextUrl), entities)
+    filtered = filter(
+        lambda x: isinstance(x, (MessageEntityTextUrl, MessageEntityUrl)),
+        entities,
+    )
+
     return [x.url for x in filtered]
 
 
