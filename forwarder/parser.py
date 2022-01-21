@@ -289,7 +289,7 @@ class BanggoodParser(ImageCreatorMixin):
         return self.scraped_data.get("title")
 
     async def get_link(self, event):
-        match = re.search(self.link_pattern, event.message)
+        match = re.search(self.link_pattern, event.message.message)
         return match and match.group(1)
 
 
