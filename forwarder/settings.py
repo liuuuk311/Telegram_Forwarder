@@ -11,6 +11,7 @@ from forwarder.parser import SpaceCoupon, MilkyWayModa, AlienSales, OfferteModa,
 # FPV_GROUP = -563703943  # Offerte Rubate (FPV)
 
 
+
 TECH_GROUP = "@offerte_tech_italia"  # Offerte Rubate - Tech
 GENERIC_GROUP = "@offerte_e_sconti_amazon"  # Offerte Rubate - Generiche
 HOME_GROUP = -652712250  # Offerte Rubate - Casa

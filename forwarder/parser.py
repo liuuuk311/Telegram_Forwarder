@@ -267,10 +267,10 @@ class BanggoodParser(ImageCreatorMixin):
         return self.scraped_data.get("image")
 
     def parse_price(self, text: str) -> str:
-        return text
+        return text if text != "US$00.00" else None
 
     def parse_old_price(self, text: str) -> str:
-        return text
+        return text if text != "US$00.00" else None
 
     def parse_title(self, text: str) -> str:
         return text

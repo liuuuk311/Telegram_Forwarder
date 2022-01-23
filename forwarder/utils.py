@@ -112,10 +112,7 @@ def get_banggood_data(url: str) -> Dict:
         options=chrome_options
     )
     url = prepare_bg_url(url)
-    logger.info(f"Getting BG URL: {url}")
     browser.get(url)
-
-    logger.info(browser.page_source)
     soup = BeautifulSoup(browser.page_source, 'html.parser')
     title = soup.find("span", class_="product-title-text").get_text()
     price = soup.find("span", class_="main-price").get_text()
