@@ -98,7 +98,8 @@ def extract_image_url(soup):
 
 
 def prepare_bg_url(url: str) -> str:
-    return url + "&currency=EUR&akmClientCountry=IT"
+    res = requests.head(url, headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0'}, allow_redirects=True)
+    return res.url + "&currency=EUR&akmClientCountry=IT"
 
 
 def get_banggood_data(url: str) -> Dict:
