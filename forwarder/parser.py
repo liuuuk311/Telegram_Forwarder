@@ -261,7 +261,7 @@ class BanggoodParser(ImageCreatorMixin):
     )
 
     async def prepare_data(self, event):
-        self.scraped_data = get_banggood_data(self.parse_link(await self.get_link(event)))
+        self.scraped_data = get_banggood_data(await self.get_link(event))
 
     async def get_image_url(self, event) -> str:
         return self.scraped_data.get("image")
