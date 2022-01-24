@@ -53,7 +53,13 @@ class Parser(abc.ABC):
     parsed_image: str = None
 
     async def prepare_data(self, event):
-        pass
+        self.parsed_price = self.parse_price(await self.get_price(event))
+        self.parsed_old_price = self.parse_old_price(await self.get_old_price(event))
+        self.parsed_title = self.parse_title(await self.get_title(event))
+        self.parsed_link = self.parse_link(await self.get_link(event))
+
+        if self.parsed_price and self.parsed_title and self.parsed_link:
+            self.parsed_image = self.parse_image(await self.get_image(event))
 
     @abc.abstractmethod
     def parse_price(self, text: str) -> str:
@@ -97,13 +103,6 @@ class Parser(abc.ABC):
 
     async def parse(self, event):
         await self.prepare_data(event)
-        self.parsed_price = self.parse_price(await self.get_price(event))
-        self.parsed_old_price = self.parse_old_price(await self.get_price(event))
-        self.parsed_title = self.parse_title(await self.get_title(event))
-        self.parsed_link = self.parse_link(await self.get_link(event))
-
-        if self.parsed_price and self.parsed_title and self.parsed_link:
-            self.parsed_image = self.parse_image(await self.get_image(event))
 
         return ParsedDeal(
             self.parsed_price,
@@ -274,7 +273,16 @@ class BanggoodParser(ImageCreatorMixin):
     )
 
     async def prepare_data(self, event):
-        self.scraped_data = get_banggood_data(await self.get_link(event))
+        self.parsed_link = self.parse_link(await self.get_link(event))
+
+        self.scraped_data = get_banggood_data(self.parsed_link)
+
+        self.parsed_price = self.parse_price(await self.get_price(event))
+        self.parsed_old_price = self.parse_old_price(await self.get_old_price(event))
+        self.parsed_title = self.parse_title(await self.get_title(event))
+
+        if self.parsed_price and self.parsed_title and self.parsed_link:
+            self.parsed_image = self.parse_image(await self.get_image(event))
 
     async def get_image_url(self, event) -> str:
         return self.scraped_data.get("image")
