@@ -46,6 +46,11 @@ class ParsedDeal:
 
 class Parser(abc.ABC):
     client: TelegramClient
+    parsed_title: str = None
+    parsed_price: str = None
+    parsed_old_price: str = None
+    parsed_link: str = None
+    parsed_image: str = None
 
     async def prepare_data(self, event):
         pass
@@ -92,12 +97,20 @@ class Parser(abc.ABC):
 
     async def parse(self, event):
         await self.prepare_data(event)
+        self.parsed_price = self.parse_price(await self.get_price(event))
+        self.parsed_old_price = self.parse_old_price(await self.get_price(event))
+        self.parsed_title = self.parse_title(await self.get_title(event))
+        self.parsed_link = self.parse_link(await self.get_link(event))
+
+        if self.parsed_price and self.parsed_title and self.parsed_link:
+            self.parsed_image = self.parse_image(await self.get_image(event))
+
         return ParsedDeal(
-            self.parse_price(await self.get_price(event)),
-            self.parse_old_price(await self.get_price(event)),
-            self.parse_title(await self.get_title(event)),
-            self.parse_link(await self.get_link(event)),
-            self.parse_image(await self.get_image(event))
+            self.parsed_price,
+            self.parsed_old_price,
+            self.parsed_title,
+            self.parsed_link,
+            self.parsed_image
         )
 
 
