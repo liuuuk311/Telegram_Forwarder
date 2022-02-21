@@ -1,10 +1,14 @@
 import random
 
 import requests
-import re
 from urllib.parse import urlparse, parse_qsl, urlencode, urlunparse
 
-token = '961b2a0b2de7548fd8a6f58c86359849dafd374a'
+# token = '961b2a0b2de7548fd8a6f58c86359849dafd374a' # NorthFPV
+BIT_TOKENS = [
+    '66085ce57d0bbdcc2f4837a46a52319eb3d930ec',
+    'e3b41def41ae4c5e33f6476551fcc028245bc66e',
+    '926f04f616c0bf4b0c0e809aa0d51e186a2ea26d',
+]
 
 API_URL_BITLINKS = "https://api-ssl.bitly.com/v4/bitlinks"
 
@@ -18,7 +22,7 @@ def get_short_url(long_url):
         json={"long_url": long_url},
         allow_redirects=False,
         timeout=2000,
-        headers={"Authorization": f"Bearer {token}"},
+        headers={"Authorization": f"Bearer {random.choice(BIT_TOKENS)}"},
     )
     response_json = response.json()
 

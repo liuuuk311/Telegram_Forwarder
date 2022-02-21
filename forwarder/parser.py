@@ -158,7 +158,7 @@ class ImageCreatorMixin(Parser, ABC):
             download_image(url),
             template_name=self.template_name,
             price=self.parse_price(await self.get_price(event)),
-            old_price=self.parse_old_price(await self.get_price(event)),
+            old_price=self.parse_old_price(await self.get_old_price(event)),
         )
 
     def parse_image(self, url: str) -> Optional[str]:
