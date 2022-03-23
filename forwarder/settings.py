@@ -30,13 +30,13 @@ CHANNELS_MAPPING = {
     "@prodigeekOfferte": ChannelSettings(TECH_GROUP, Prodigeek()),
     "@videogiochi_it": ChannelSettings(TECH_GROUP, VideogiochiIT()),
 
-    "@MilkyWayShopping_Moda": ChannelSettings(FASHION_GROUP, MilkyWayModa()),
-    "@offertadelgiornomoda": ChannelSettings(FASHION_GROUP, OfferteModa()),
-    "@OutletPoint": ChannelSettings(FASHION_GROUP, OutletPoint()),
+    # "@MilkyWayShopping_Moda": ChannelSettings(FASHION_GROUP, MilkyWayModa()),
+    # "@offertadelgiornomoda": ChannelSettings(FASHION_GROUP, OfferteModa()),
+    # "@OutletPoint": ChannelSettings(FASHION_GROUP, OutletPoint()),
 
     "@fpvmattia": ChannelSettings(FPV_GROUP, BanggoodParser()),
     "@hardwareprogrammi": ChannelSettings(FPV_GROUP, BanggoodParser()),
-    "@bestFPVdeals": ChannelSettings(FPV_GROUP, BanggoodParser()),
+    # "@bestFPVdeals": ChannelSettings(FPV_GROUP, BanggoodParser()),
     "@RHobbyOfferte": ChannelSettings(FPV_GROUP, BanggoodParser()),
 }
 
