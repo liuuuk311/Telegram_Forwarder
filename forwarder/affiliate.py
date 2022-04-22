@@ -1,37 +1,29 @@
+import os
 import random
 
 import requests
-from urllib.parse import urlparse, parse_qsl, urlencode, urlunparse
+from urllib.parse import urlparse, parse_qsl, urlencode, urlunparse, quote
 
-# token = '961b2a0b2de7548fd8a6f58c86359849dafd374a' # NorthFPV
-BIT_TOKENS = [
-    '66085ce57d0bbdcc2f4837a46a52319eb3d930ec',
-    'e3b41def41ae4c5e33f6476551fcc028245bc66e',
-    '926f04f616c0bf4b0c0e809aa0d51e186a2ea26d',
-]
-
-API_URL_BITLINKS = "https://api-ssl.bitly.com/v4/bitlinks"
+CUTTLY_API_TOKEN = os.environ['CUTTLY_API_TOKEN']
 
 headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0'}
 
 
 def get_short_url(long_url):
-    long_url = long_url.strip()
+    long_url = quote(long_url.strip())
     response = requests.post(
-        url=API_URL_BITLINKS,
-        json={"long_url": long_url},
+        url=f"https://cutt.ly/api/api.php?key={CUTTLY_API_TOKEN}&short={long_url}",
         allow_redirects=False,
         timeout=2000,
-        headers={"Authorization": f"Bearer {random.choice(BIT_TOKENS)}"},
     )
     response_json = response.json()
 
-    return response_json.get('link', long_url)
+    return response_json.get('url', {}).get('shortLink', long_url)
 
 
 def prepare_url(link):
     if not link.startswith('https://') and not link.startswith('http://'):
-        link = 'https://' + link
+        link = f'https://{link}'
 
     return link
 
