@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import random
@@ -71,11 +72,11 @@ def get_amazon_image_from_page(url: str) -> str:
         logger.warning("Amazon page thinks we are a BOT, no content found!")
         return ""
 
-    img_url = img.get("data-old-hires", "")
+    img_url = json.loads(img.get("data-a-dynamic-image", "{}"))
     if not img_url:
         logger.warning(f"Could not get the image from Amazon page soup was {img}")
 
-    return img_url
+    return max(img_url, key=img_url.get)
 
 
 def get_random_user_agent():
@@ -99,7 +100,7 @@ def extract_image_url(soup):
 
 def prepare_bg_url(url: str) -> str:
     res = requests.head(url, headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0'}, allow_redirects=True)
-    return res.url + "&currency=EUR&akmClientCountry=IT"
+    return f'{res.url}&currency=EUR&akmClientCountry=IT'
 
 
 def get_banggood_data(url: str) -> Dict:
@@ -143,4 +144,4 @@ if __name__ == '__main__':
             f.write(response.content)
         return DEFAULT_DOWNLOADED_IMAGE
 
-    download_image(get_amazon_image_from_page("https://www.amazon.it/dp/B0774R62YJ/?tag=spacecoupon-21&smid=a4ejukznboddx&psc=1"))
+    download_image(get_amazon_image_from_page("https://www.amazon.it/gp/product/B093QCVQPC?m=A1HO9729ND375Y&linkCode=osi&th=1&psc=1&tag=iamlucafpv-21&ref=as_li_ss_tl"))
