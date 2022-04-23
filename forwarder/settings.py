@@ -1,8 +1,7 @@
 from collections import namedtuple
 
 from forwarder.formatter import GenericChannelFormatter
-from forwarder.parser import SpaceCoupon, MilkyWayModa, AlienSales, OfferteModa, OfferteTech, Prodigeek, \
-    OutletPoint, VideogiochiIT, BanggoodParser
+from forwarder.parser import OfferteTech, Prodigeek, VideogiochiIT, BanggoodParser
 
 # TECH_GROUP = -785446862  # Offerte Rubate - Tech
 # GENERIC_GROUP = -786771026  # Offerte Rubate - Generiche
@@ -23,20 +22,13 @@ FPV_GROUP = "@fpv_coupons"  # Offerte Rubate (FPV)
 ChannelSettings = namedtuple("ChannelSettings", ['destination_channel', "parser"])
 
 CHANNELS_MAPPING = {
-    "@SpaceCoupon": ChannelSettings(GENERIC_GROUP, SpaceCoupon()),
-    "@AlienSalesOfferte": ChannelSettings(GENERIC_GROUP, AlienSales()),
 
     "@offertepuntotech": ChannelSettings(TECH_GROUP, OfferteTech()),
     "@prodigeekOfferte": ChannelSettings(TECH_GROUP, Prodigeek()),
     "@videogiochi_it": ChannelSettings(TECH_GROUP, VideogiochiIT()),
 
-    # "@MilkyWayShopping_Moda": ChannelSettings(FASHION_GROUP, MilkyWayModa()),
-    # "@offertadelgiornomoda": ChannelSettings(FASHION_GROUP, OfferteModa()),
-    # "@OutletPoint": ChannelSettings(FASHION_GROUP, OutletPoint()),
-
     "@fpvmattia": ChannelSettings(FPV_GROUP, BanggoodParser()),
     "@hardwareprogrammi": ChannelSettings(FPV_GROUP, BanggoodParser()),
-    # "@bestFPVdeals": ChannelSettings(FPV_GROUP, BanggoodParser()),
     "@RHobbyOfferte": ChannelSettings(FPV_GROUP, BanggoodParser()),
 }
 
