@@ -21,9 +21,7 @@ class BasicDealFormatter(Formatter):
     urgency_messages: List[str] = []
 
     def format_urgency(self) -> str:
-        if not self.urgency_messages:
-            return ""
-        return random.choice(self.urgency_messages)
+        return random.choice(self.urgency_messages) if self.urgency_messages else ""
 
     def format_title(self) -> str:
         return f"{self.title_emoji or ''} __{self.deal.title}__"

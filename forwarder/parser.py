@@ -168,9 +168,7 @@ class ImageCreatorMixin(Parser, ABC):
 class AmazonLinkParserMixin:
     @staticmethod
     def parse_link(link: str) -> str:
-        if is_amazon_link(link):
-            return overwrite_affiliate(link)
-        return ""
+        return overwrite_affiliate(link) if is_amazon_link(link) else ""
 
 
 class MisterCoupon(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
@@ -221,7 +219,7 @@ class OutletPoint(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
     async def get_title(self, event) -> str:
         filtered = filter(lambda x: isinstance(x, MessageEntityItalic), event.message.entities)
         res = get_inner_text(event.message.message, filtered)
-        return res if not isinstance(res, list) else res[0]
+        return res[0] if isinstance(res, list) else res
 
     def parse_title(self, text: str) -> str:
         return text
