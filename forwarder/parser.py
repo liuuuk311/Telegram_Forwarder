@@ -184,14 +184,14 @@ class SpaceCoupon(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
     price_pattern = re.compile(r"💰 (\d+(,\d{2}?)€)")
     old_price_pattern = re.compile(r"anziché (\d+(,\d{2})€)!")
     title_pattern = re.compile(r"🛒 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?%?\d?)*)\n")
-    template_name = "generic_template.jpeg"
+    template_name = "images/generic_template.jpeg"
 
     async def get_link(self, event) -> str:
         return extract_links(event.message.entities)[0]
 
 
 class MilkyWayModa(SpaceCoupon):
-    template_name = "fashion_template.jpeg"
+    template_name = "fimages/ashion_template.jpeg"
 
 
 class AlienSales(SpaceCoupon):
@@ -201,7 +201,7 @@ class AlienSales(SpaceCoupon):
 class OfferteModa(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
     price_pattern = re.compile(r"a soli (\d+(,\d{2}?)€)")
     old_price_pattern = re.compile(r"da (\d+(,\d{2})€)")
-    template_name = "fashion_template.jpeg"
+    template_name = "images/fashion_template.jpeg"
 
     def parse_title(self, text: str) -> str:
         return text.split("\n")[0]
@@ -214,7 +214,7 @@ class OutletPoint(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
     price_pattern = re.compile(r"💰 (\d+(,\d{2}?)€)")
     old_price_pattern = re.compile(r"anziché (\d+(,\d{2})€)")
     amazon_link_pattern = re.compile(r"((https?:\/\/)?(amzn\.to)\/\w*)")
-    template_name = "fashion_template.jpeg"
+    template_name = "images/fashion_template.jpeg"
 
     async def get_title(self, event) -> str:
         filtered = filter(lambda x: isinstance(x, MessageEntityItalic), event.message.entities)
@@ -232,7 +232,7 @@ class OutletPoint(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
 class OfferteTech(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
     price_pattern = re.compile(r"💶 (\d+(,\d{2}?)€)")
     old_price_pattern = re.compile(r"invece di (\d+(,\d{2})€)")
-    template_name = "tech_template.jpeg"
+    template_name = "images/tech_template.jpeg"
 
     def parse_title(self, text: str) -> str:
         return text.split("\n")[0]
@@ -244,7 +244,7 @@ class OfferteTech(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
 class Prodigeek(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
     price_pattern = re.compile(r"💰 Prezzo: (\d+(,\d{2}?)€)")
     old_price_pattern = None
-    template_name = "tech_template.jpeg"
+    template_name = "images/tech_template.jpeg"
 
     def parse_title(self, text: str) -> str:
         return text.split("\n")[0]
@@ -256,7 +256,7 @@ class Prodigeek(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
 class VideogiochiIT(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
     price_pattern = re.compile(r"⚡️(\d+(,\d{2}?)€)⚡️")
     old_price_pattern = re.compile(r"invece di (\d+(,\d{2}?)€)")
-    template_name = "tech_template.jpeg"
+    template_name = "images/tech_template.jpeg"
     title_pattern = re.compile(r"💥 ((\w*\'?\'? ?,?\(?\)?-?\.?\/?%?\d?)*)\n")
 
     async def get_link(self, event) -> str:
@@ -265,7 +265,7 @@ class VideogiochiIT(AmazonLinkParserMixin, ImageCreatorMixin, RegexParser):
 
 class BanggoodParser(ImageCreatorMixin):
     scraped_data: dict
-    template_name = "fpv_template.jpeg"
+    template_name = "images/fpv_template.jpeg"
     link_pattern = re.compile(
         r"(?P<url>https?:\/\/[^\s]+)|((https?:\/\/)?((bit\.ly)|(banggood\.app\.link)|(m\.banggood\.com)|(amzn\.to))\/\w*)"
     )

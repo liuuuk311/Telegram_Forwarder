@@ -8,6 +8,8 @@ from typing import List, Optional, Dict
 import requests
 from lxml.html import fromstring
 from selenium import webdriver
+from telethon import TelegramClient
+from telethon.sessions import StringSession
 from telethon.tl.types import MessageEntityTextUrl, TypeMessageEntity, MessageEntityUrl
 from bs4 import BeautifulSoup
 
@@ -126,6 +128,13 @@ def get_banggood_data(url: str) -> Dict:
         "old_price": old_price,
         "image": image,
     }
+
+
+def generate_new_session_key(api_id, api_hash):
+    with TelegramClient(StringSession(), api_id, api_hash) as client:
+        session_key = client.session.save()
+        print(session_key)
+        exit()
 
 
 if __name__ == '__main__':

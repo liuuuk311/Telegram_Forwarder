@@ -87,4 +87,4 @@ if __name__ == '__main__':
     ]
     for url in urls:
         img_url = download_image(get_amazon_image_from_page(url))
-        create_our_image(img_url, template_name="generic_template.jpeg", price="9.99", old_price="1000")
+        create_our_image(img_url, template_name="images/generic_template.jpeg", price="9.99", old_price="1000")
